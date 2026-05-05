@@ -1,25 +1,9 @@
 import { useState } from "react";
 import type { Character } from "../types/Character";
-import { CHARACTERS } from "../data/characters";
 import Timer from "./Timer";
 import { LEVELS } from "../data/Levels";
+import { pickTargetFigure, generateCharacters } from "../utils/gameUtils";
 
-function pickTargetFigure(): string {
-  return CHARACTERS[Math.floor(Math.random() * CHARACTERS.length)].figure;
-}
-
-function generateCharacters(count: number, targetFigure: string): Character[] {
-  const targetIndex = Math.floor(Math.random() * count);
-  const otherFigures = CHARACTERS.filter((c) => c.figure !== targetFigure);
-  return Array.from({ length: count }, (_, i) => {
-    if (i === targetIndex) {
-      return { id: i, isTarget: true, figure: targetFigure };
-    }
-    const randomOther =
-      otherFigures[Math.floor(Math.random() * otherFigures.length)];
-    return { id: i, isTarget: false, figure: randomOther.figure };
-  });
-}
 
 export default function Game() {
   const [gameState, setGameState] = useState<"idle" | "playing" | "gameover">("idle");
@@ -105,7 +89,7 @@ export default function Game() {
       />
 
       <h2>{message}</h2>
-      <p>Score: {score} | Level progress: {levelScore}/{currentLevel.pointsToAdvance}</p>
+      <p>Score: {score}</p>
 
       {gameState === "gameover" && (
         <div>
