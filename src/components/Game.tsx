@@ -3,6 +3,8 @@ import type { Character } from "../types/Character";
 import Timer from "./Timer";
 import { LEVELS } from "../data/Levels";
 import { pickTargetFigure, generateCharacters } from "../utils/gameUtils";
+import styles from "./Game.module.css";
+
 
 
 export default function Game() {
@@ -67,7 +69,6 @@ export default function Game() {
     return (
       <div>
         <h1>Wanted!</h1>
-        <p>Find Hans before the time runs out!</p>
         <button onClick={startGame}>Start game</button>
       </div>
     );
@@ -98,8 +99,8 @@ export default function Game() {
         </div>
       )}
 
-      <div className="grid">
-        {characters.map((c) => (
+    <div className={`grid ${styles[`grid${Math.sqrt(currentLevel.gridCount)}`]}`}>
+          {characters.map((c) => (
           <button key={c.id} onClick={() => handleClick(c)}>
             {c.figure}
           </button>
