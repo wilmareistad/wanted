@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef } from "react";
 import type { Character } from "../types/Character";
 import Timer, { type TimerHandle } from "./Timer";
 import { LEVELS } from "../data/Levels";

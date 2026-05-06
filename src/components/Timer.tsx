@@ -23,18 +23,19 @@ const Timer = forwardRef<TimerHandle, TimerProps>(({ initialTime, onTimeUp }, re
       onTimeUp();
       return;
     }
+
     const interval = setInterval(() => {
-      setTimeLeft((prev) => {
-        if (prev <= 1) {
-          clearInterval(interval);
-          onTimeUp();
-          return 0;
-        }
-        return prev - 1;
-      });
+      setTimeLeft((prev) => prev - 1);
     }, 1000);
+
     return () => clearInterval(interval);
-  }, [timeLeft > 0]);
+  }, [timeLeft, onTimeUp]);
+
+  useEffect(() => {
+    if (timeLeft === 0) {
+      onTimeUp();
+    }
+  }, [timeLeft, onTimeUp]);
 
   return <h3>Time: {timeLeft}</h3>;
 });
