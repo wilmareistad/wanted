@@ -1,3 +1,11 @@
+.grid {
+  display: grid;
+  gap: 8px;
+}
+
+.grid2 {
+  grid-template-columns: repeat(2, 1fr);
+}
 .grid3 {
   grid-template-columns: repeat(3, 1fr);
 }

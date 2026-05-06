@@ -1,11 +1,10 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 import type { Character } from "../types/Character";
-import Timer from "./Timer";
+import Timer, { type TimerHandle } from "./Timer";
 import { LEVELS } from "../data/Levels";
 import { pickTargetFigure, generateCharacters } from "../utils/gameUtils";
 import styles from "./Game.module.css";
-
-
+import CarouselGrid from "./CarouselGrid";
 
 export default function Game() {
   const [gameState, setGameState] = useState<"idle" | "playing" | "gameover">("idle");
@@ -14,10 +13,12 @@ export default function Game() {
   const [characters, setCharacters] = useState<Character[]>([]);
   const [message, setMessage] = useState("");
   const [score, setScore] = useState(0);
-  const [levelScore, setLevelScore] = useState(0);
-  const [timerKey, setTimerKey] = useState(0);
+  const [currentTime, setCurrentTime] = useState(10);
+  const timerRef = useRef<TimerHandle>(null);
 
   const currentLevel = LEVELS[levelIndex];
+  const cols = Math.sqrt(currentLevel.gridCount);
+  const [timerKey, setTimerKey] = useState(0);
 
   function startGame() {
     const newTarget = pickTargetFigure();
@@ -25,46 +26,34 @@ export default function Game() {
     setCharacters(generateCharacters(LEVELS[0].gridCount, newTarget));
     setMessage("");
     setScore(0);
-    setLevelScore(0);
     setLevelIndex(0);
+    setCurrentTime(10);
     setTimerKey((k) => k + 1);
     setGameState("playing");
-  }
-
-  function nextRound(index: number) {
-    const newTarget = pickTargetFigure();
-    setTargetFigure(newTarget);
-    setCharacters(generateCharacters(LEVELS[index].gridCount, newTarget));
   }
 
   function handleClick(character: Character) {
     if (gameState !== "playing") return;
 
     if (character.isTarget) {
-      const newLevelScore = levelScore + 1;
       setScore((prev) => prev + 1);
+      timerRef.current?.addTime(5);
 
-      if (newLevelScore >= currentLevel.pointsToAdvance) {
-        const nextIndex = levelIndex + 1;
-        if (nextIndex >= LEVELS.length) {
-          setGameState("gameover");
-        } else {
-          setMessage(`Level ${nextIndex + 1}!`);
-          setLevelIndex(nextIndex);
-          setLevelScore(0);
-          nextRound(nextIndex);
-        }
+      const nextIndex = levelIndex + 1;
+      if (nextIndex >= LEVELS.length) {
+        setGameState("gameover");
       } else {
-        setLevelScore(newLevelScore);
-        setMessage("CORRECT!");
-        nextRound(levelIndex);
+        setMessage(`Level ${nextIndex + 1}!`);
+        setLevelIndex(nextIndex);
+        const newTarget = pickTargetFigure();
+        setTargetFigure(newTarget);
+        setCharacters(generateCharacters(LEVELS[nextIndex].gridCount, newTarget));
       }
     } else {
       setMessage("Wrong...");
     }
   }
 
-  // start
   if (gameState === "idle") {
     return (
       <div>
@@ -74,18 +63,16 @@ export default function Game() {
     );
   }
 
-  // game and game over
   return (
     <div>
-      <div>
-        <h1>Wanted!</h1>
-        <p>Level {currentLevel.level}</p>
-        <div>{targetFigure}</div>
-      </div>
+      <h1>Wanted!</h1>
+      <p>Level {currentLevel.level}</p>
+      <div>{targetFigure}</div>
 
       <Timer
         key={timerKey}
-        initialTime={30}
+        ref={timerRef}
+        initialTime={currentTime}
         onTimeUp={() => setGameState("gameover")}
       />
 
@@ -99,13 +86,18 @@ export default function Game() {
         </div>
       )}
 
-    <div className={`grid ${styles[`grid${Math.sqrt(currentLevel.gridCount)}`]}`}>
+      {/* Vanligt grid eller karusell */}
+      {currentLevel.carousel ? (
+        <CarouselGrid characters={characters} cols={cols} onCharacterClick={handleClick} />
+      ) : (
+        <div className={`grid ${styles[`grid${cols}`]}`}>
           {characters.map((c) => (
-          <button key={c.id} onClick={() => handleClick(c)}>
-            {c.figure}
-          </button>
-        ))}
-      </div>
+            <button key={c.id} onClick={() => handleClick(c)}>
+              {c.figure}
+            </button>
+          ))}
+        </div>
+      )}
     </div>
   );
 }
