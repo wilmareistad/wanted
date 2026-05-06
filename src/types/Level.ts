@@ -3,7 +3,6 @@ import type { Character } from "./Character";
 export type LevelConfig = {
   level: number;
   gridCount: number;
-  pointsToAdvance: number;
   initialTime: number;
   carousel?: boolean;
 };
