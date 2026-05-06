@@ -8,13 +8,13 @@ export type LevelConfig = {
   carousel?: boolean;
 };
 
-export type Props = {
+export type CarouselProps = {
   characters: Character[];
   cols: number;
   onCharacterClick: (c: Character) => void;
 };
 
-export type RowProps = {
+export type CarouselRowProps = {
   row: Character[];
   direction: "left" | "right";
   onCharacterClick: (c: Character) => void;

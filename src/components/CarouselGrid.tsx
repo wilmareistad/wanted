@@ -1,7 +1,7 @@
 import type { Character } from "../types/Character";
-import type { Props, RowProps } from "../types/Level";
+import type { CarouselProps, CarouselRowProps } from "../types/Level";
 
-export default function CarouselGrid({ characters, cols, onCharacterClick }: Props) {
+export default function CarouselGrid({ characters, cols, onCharacterClick }: CarouselProps) {
   const rows: Character[][] = [];
   for (let i = 0; i < characters.length; i += cols) {
     rows.push(characters.slice(i, i + cols));
@@ -21,7 +21,7 @@ export default function CarouselGrid({ characters, cols, onCharacterClick }: Pro
   );
 }
 
-function CarouselRow({ row, direction, onCharacterClick }: RowProps) {
+function CarouselRow({ row, direction, onCharacterClick }: CarouselRowProps) {
   const doubled = [...row, ...row];
 
   return (
