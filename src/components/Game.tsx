@@ -4,12 +4,18 @@ import { LEVELS } from "../data/Levels";
 import { generateLevel, type GridCharacter } from "../utils/gameUtils";
 import { validateClick } from "../utils/gameUtils";
 import Rune from "../assets/Rune.svg";
+import RedRune from "../assets/RedRune.svg";
 import styles from "./Game.module.css";
 import CarouselGrid from "./CarouselGrid";
 
 function resolveFigure(figure: string): string {
   if (figure === "rune") return Rune;
+  if (figure === "redrune") return RedRune;
   return figure;
+}
+
+function isImage(figure: string): boolean {
+  return figure.startsWith("/") || figure.includes(".svg") || figure.includes(".png");
 }
 
 export default function Game() {
@@ -82,8 +88,8 @@ export default function Game() {
       <p>Level {currentLevel.level}</p>
 
       <div style={{ fontSize: "3rem", minHeight: "60px" }}>
-        {targetFigure === Rune ? (
-          <img src={Rune} alt="target" style={{ height: "60px", width: "auto" }} />
+        {isImage(targetFigure) ? (
+          <img src={targetFigure} alt="target" style={{ height: "60px", width: "auto" }} />
         ) : (
           targetFigure
         )}
@@ -118,8 +124,8 @@ export default function Game() {
               onClick={() => handleClick(c)}
               style={{ fontSize: "2rem", minWidth: "60px", minHeight: "60px" }}
             >
-              {c.figure === Rune ? (
-                <img src={c.figure} alt="rune" style={{ width: "100%", height: "100%", objectFit: "contain" }} />
+              {isImage(c.figure) ? (
+                <img src={c.figure} alt="figure" style={{ width: "100%", height: "100%", objectFit: "contain" }} />
               ) : (
                 c.figure
               )}
