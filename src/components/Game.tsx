@@ -1,22 +1,9 @@
 import { useState, useRef } from "react";
 import Timer, { type TimerHandle } from "./Timer";
 import { LEVELS } from "../data/Levels";
-import { generateLevel, type GridCharacter } from "../utils/gameUtils";
-import { validateClick } from "../utils/gameUtils";
-import Rune from "../assets/Rune.svg";
-import RedRune from "../assets/RedRune.svg";
+import { generateLevel, validateClick, resolveFigure, isImage, type GridCharacter } from "../utils/gameUtils";
 import styles from "./Game.module.css";
 import CarouselGrid from "./CarouselGrid";
-
-function resolveFigure(figure: string): string {
-  if (figure === "rune") return Rune;
-  if (figure === "redrune") return RedRune;
-  return figure;
-}
-
-function isImage(figure: string): boolean {
-  return figure.startsWith("/") || figure.includes(".svg") || figure.includes(".png");
-}
 
 export default function Game() {
   const [gameState, setGameState] = useState<"idle" | "playing" | "gameover">("idle");

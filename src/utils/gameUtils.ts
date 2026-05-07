@@ -1,3 +1,6 @@
+import Rune from "../assets/Rune.svg";
+import RedRune from "../assets/RedRune.svg";
+
 const SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL;
 const SUPABASE_ANON_KEY = import.meta.env.VITE_SUPABASE_ANON_KEY;
 
@@ -47,4 +50,15 @@ export async function validateClick(
     }),
   });
   return res.json();
+}
+
+// figure help 
+export function resolveFigure(figure: string): string {
+  if (figure === "rune") return Rune;
+  if (figure === "redrune") return RedRune;
+  return figure;
+}
+
+export function isImage(figure: string): boolean {
+  return figure.startsWith("/") || figure.includes(".svg") || figure.includes(".png");
 }
