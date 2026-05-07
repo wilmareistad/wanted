@@ -38,7 +38,11 @@ function CarouselRow({ row, direction, onCharacterClick }: CarouselRowProps) {
           onClick={() => onCharacterClick(c)}
           style={{ minWidth: "60px", minHeight: "60px", fontSize: "2rem" }}
         >
-          {c.figure}
+          {c.figure.includes(".svg") ? (
+            <img src={c.figure} alt={`character-${c.id}`} style={{ width: "100%", height: "100%", objectFit: "contain" }} />
+          ) : (
+            c.figure
+          )}
         </button>
       ))}
     </div>

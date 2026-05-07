@@ -67,7 +67,13 @@ export default function Game() {
     <div>
       <h1>Wanted!</h1>
       <p>Level {currentLevel.level}</p>
-      <div>{targetFigure}</div>
+      <div style={{ fontSize: "3rem", minHeight: "60px" }}>
+        {targetFigure.includes(".svg") ? (
+          <img src={targetFigure} alt="target" style={{ height: "60px", width: "auto" }} />
+        ) : (
+          targetFigure
+        )}
+      </div>
 
       <Timer
         key={timerKey}
@@ -86,14 +92,18 @@ export default function Game() {
         </div>
       )}
 
-      {/* Vanligt grid eller karusell */}
+      {/* grid or carousel */}
       {currentLevel.carousel ? (
         <CarouselGrid characters={characters} cols={cols} onCharacterClick={handleClick} />
       ) : (
         <div className={`grid ${styles[`grid${cols}`]}`}>
           {characters.map((c) => (
-            <button key={c.id} onClick={() => handleClick(c)}>
-              {c.figure}
+            <button key={c.id} onClick={() => handleClick(c)} style={{ fontSize: "2rem", minWidth: "60px", minHeight: "60px" }}>
+              {c.figure.includes(".svg") ? (
+                <img src={c.figure} alt={`character-${c.id}`} style={{ width: "100%", height: "100%", objectFit: "contain" }} />
+              ) : (
+                c.figure
+              )}
             </button>
           ))}
         </div>
