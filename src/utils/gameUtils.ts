@@ -1,19 +1,50 @@
-import { CHARACTERS } from "../data/characters";
-import type { Character } from "../types/Character";
+const SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL;
+const SUPABASE_ANON_KEY = import.meta.env.VITE_SUPABASE_ANON_KEY;
 
-export function pickTargetFigure(): string {
-  return CHARACTERS[Math.floor(Math.random() * CHARACTERS.length)].figure;
+export type GridCharacter = {
+  id: number;
+  figure: string;
+};
+
+export type LevelData = {
+  sessionId: string;
+  targetFigure: string;
+  grid: GridCharacter[];
+};
+
+export async function generateLevel(count: number): Promise<LevelData> {
+  const res = await fetch(`${SUPABASE_URL}/rest/v1/rpc/generate_level`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      apikey: SUPABASE_ANON_KEY,
+      Authorization: `Bearer ${SUPABASE_ANON_KEY}`,
+    },
+    body: JSON.stringify({ count }),
+  });
+  const data = await res.json();
+  return {
+    sessionId: data.sessionId,
+    targetFigure: data.targetFigure,
+    grid: data.grid.map((figure: string, i: number) => ({ id: i, figure })),
+  };
 }
 
-export function generateCharacters(count: number, targetFigure: string): Character[] {
-  const targetIndex = Math.floor(Math.random() * count);
-  const otherFigures = CHARACTERS.filter((c) => c.figure !== targetFigure);
-  return Array.from({ length: count }, (_, i) => {
-    if (i === targetIndex) {
-      return { id: i, isTarget: true, figure: targetFigure };
-    }
-    const randomOther =
-      otherFigures[Math.floor(Math.random() * otherFigures.length)];
-    return { id: i, isTarget: false, figure: randomOther.figure };
+export async function validateClick(
+  sessionId: string,
+  clickedIndex: number,
+): Promise<boolean> {
+  const res = await fetch(`${SUPABASE_URL}/rest/v1/rpc/validate_click`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      apikey: SUPABASE_ANON_KEY,
+      Authorization: `Bearer ${SUPABASE_ANON_KEY}`,
+    },
+    body: JSON.stringify({
+      session_id: sessionId,
+      clicked_index: clickedIndex,
+    }),
   });
+  return res.json();
 }
