@@ -7,7 +7,6 @@ function App() {
     <>
     <main>
       <div>
-        <h1>FIND THE IMPOSTOR</h1>
         <Game />
       </div>
     </main>

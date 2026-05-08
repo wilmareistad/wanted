@@ -48,7 +48,6 @@ export function useGameLogic() {
       if (nextIndex >= LEVELS.length) {
         setGameState("gameover");
       } else {
-        setMessage(`Level ${nextIndex + 1}!`);
         setLevelIndex(nextIndex);
         await loadLevel(nextIndex);
       }

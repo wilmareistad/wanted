@@ -21,8 +21,9 @@ export function GameOn({
 
   return (
     <div>
-      <h1>Wanted!</h1>
       <p>Level {currentLevel.level}</p>
+      <p>Score: {score}</p>
+      <h1>Wanted!</h1>
 
       <div style={{ fontSize: "3rem", minHeight: "60px" }}>
         {isImage(targetFigure) ? (
@@ -35,7 +36,6 @@ export function GameOn({
       <Timer key={timerKey} ref={timerRef} initialTime={10} onTimeUp={onTimeUp} />
 
       <h2>{message}</h2>
-      <p>Score: {score}</p>
 
       {loading ? (
         <p>Loading...</p>
