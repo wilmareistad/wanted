@@ -5,7 +5,7 @@ import { isImage } from "../../utils/gameUtils";
 import styles from "./Game.module.css";
 import type { GameOnProps } from "../../types/Game";
 
-export function GameOn({
+export function GameOn({ 
   currentLevel,
   targetFigure,
   characters,
