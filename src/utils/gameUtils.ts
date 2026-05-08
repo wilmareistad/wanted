@@ -1,5 +1,8 @@
-import Rune from "../assets/Rune.svg";
+import Rune from "../assets/Rune.png";
 import RedRune from "../assets/RedRune.png";
+import ReallyRedRune from "../assets/ReallyRedRune.png";
+import WhiteRune from "../assets/WhiteRune.png";
+import BlackRune from "../assets/BlackRune.png";
 
 const SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL;
 const SUPABASE_ANON_KEY = import.meta.env.VITE_SUPABASE_ANON_KEY;
@@ -56,6 +59,10 @@ export async function validateClick(
 export function resolveFigure(figure: string): string {
   if (figure === "rune") return Rune;
   if (figure === "redrune") return RedRune;
+  if (figure === "reallyredrune") return ReallyRedRune;
+  if (figure === "redrune") return RedRune;
+  if (figure === "whiterune") return WhiteRune;
+  if (figure === "blackrune") return BlackRune;
   return figure;
 }
 
