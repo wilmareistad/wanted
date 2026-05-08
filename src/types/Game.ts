@@ -24,7 +24,7 @@ export interface GameOnProps {
   score: number;
   loading: boolean;
   timerKey: number;
-  timerRef: React.RefObject<TimerHandle>;
+  timerRef: React.RefObject<TimerHandle | null>;
   onCharacterClick: (character: GridCharacter) => void;
   onTimeUp: () => void;
 }
