@@ -55,7 +55,7 @@ export async function validateClick(
   return res.json();
 }
 
-// figure help 
+// figure help
 export function resolveFigure(figure: string): string {
   const key = figure.toLowerCase();
   switch (key) {
@@ -76,5 +76,9 @@ export function resolveFigure(figure: string): string {
 
 export function isImage(figure: string): boolean {
   const lower = figure.toLowerCase();
-  return lower.startsWith("/") || /\.(png|jpe?g|svg|gif)$/.test(lower);
+  return (
+    lower.startsWith("/") ||
+    lower.startsWith("data:image/") ||
+    /\.(png|jpe?g|svg|gif)$/.test(lower)
+  );
 }
