@@ -74,6 +74,7 @@ export default function Game() {
         score={score}
         loading={loading}
         timerKey={timerKey}
+        timerRef={timerRef}
         onCharacterClick={handleClick}
         onTimeUp={() => setGameState("gameover")}
       />

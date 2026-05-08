@@ -14,10 +14,10 @@ export function GameOn({
   score,
   loading,
   timerKey,
+  timerRef,
   onCharacterClick,
   onTimeUp,
 }: GameOnProps): ReactNode {
-  const timerRef = useRef<TimerHandle>(null);
   const cols = Math.sqrt(currentLevel.gridCount);
 
   return (

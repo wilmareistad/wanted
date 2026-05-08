@@ -1,6 +1,7 @@
 import type { LEVELS } from "../data/Levels";
 import type { GridCharacter } from "../utils/gameUtils";
 import type { Character } from "./Character";
+import type { TimerHandle } from "../components/Timer";
 
 export type GameState = {
   characters: Character[];
@@ -23,6 +24,7 @@ export interface GameOnProps {
   score: number;
   loading: boolean;
   timerKey: number;
+  timerRef: React.RefObject<TimerHandle>;
   onCharacterClick: (character: GridCharacter) => void;
   onTimeUp: () => void;
 }
