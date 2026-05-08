@@ -57,15 +57,24 @@ export async function validateClick(
 
 // figure help 
 export function resolveFigure(figure: string): string {
-  if (figure === "rune") return Rune;
-  if (figure === "redrune") return RedRune;
-  if (figure === "reallyredrune") return ReallyRedRune;
-  if (figure === "redrune") return RedRune;
-  if (figure === "whiterune") return WhiteRune;
-  if (figure === "blackrune") return BlackRune;
-  return figure;
+  const key = figure.toLowerCase();
+  switch (key) {
+    case "rune":
+      return Rune;
+    case "redrune":
+      return RedRune;
+    case "reallyredrune":
+      return ReallyRedRune;
+    case "whiterune":
+      return WhiteRune;
+    case "blackrune":
+      return BlackRune;
+    default:
+      return figure;
+  }
 }
 
 export function isImage(figure: string): boolean {
-  return figure.startsWith("/") || figure.includes(".svg") || figure.includes(".png");
+  const lower = figure.toLowerCase();
+  return lower.startsWith("/") || /\.(png|jpe?g|svg|gif)$/.test(lower);
 }
