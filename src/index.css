@@ -1,6 +1,28 @@
+:root {
+  --headerfont: "Jersey 10", sans-serif
+
+
+}
+
+
+
 
 body {
   margin: 0;
+}
+
+h1, h2{
+  font-family: var(--headerfont);
+}
+
+h1 {
+  font-size: 6rem;
+  margin-bottom: 0;
+}
+
+h2 {
+  font-size: 4rem;
+    margin-top: 0.5rem;
 }
 
 .grid {
