@@ -1,6 +1,5 @@
 import type { ReactNode } from "react";
-import { useRef } from "react";
-import Timer, { type TimerHandle } from "../Timer";
+import Timer from "../Timer";
 import CarouselGrid from "../CarouselGrid";
 import { isImage } from "../../utils/gameUtils";
 import styles from "./Game.module.css";

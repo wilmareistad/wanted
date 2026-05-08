@@ -1,64 +1,23 @@
-import { useState, useRef } from "react";
-import { type TimerHandle } from "../Timer";
-import { LEVELS } from "../../data/Levels";
-import { generateLevel, validateClick, resolveFigure, type GridCharacter } from "../../utils/gameUtils";
+import { useGameLogic } from "./UseGameLogic";
 import { Idle } from "./Idle";
 import { GameOn } from "./GameOn";
 import { GameOver } from "./GameOver";
 
 export default function Game() {
-  const [gameState, setGameState] = useState<"idle" | "playing" | "gameover">("idle");
-  const [levelIndex, setLevelIndex] = useState(0);
-  const [targetFigure, setTargetFigure] = useState("");
-  const [characters, setCharacters] = useState<GridCharacter[]>([]);
-  const [sessionId, setSessionId] = useState<string | null>(null);
-  const [message, setMessage] = useState("");
-  const [score, setScore] = useState(0);
-  const [timerKey, setTimerKey] = useState(0);
-  const [loading, setLoading] = useState(false);
-  const timerRef = useRef<TimerHandle>(null);
-
-  const currentLevel = LEVELS[levelIndex];
-
-  async function loadLevel(index: number) {
-    setLoading(true);
-    const data = await generateLevel(LEVELS[index].gridCount);
-    setSessionId(data.sessionId);
-    setTargetFigure(resolveFigure(data.targetFigure));
-    setCharacters(data.grid.map((c) => ({ ...c, figure: resolveFigure(c.figure) })));
-    setLoading(false);
-  }
-
-  async function startGame() {
-    setScore(0);
-    setLevelIndex(0);
-    setMessage("");
-    setTimerKey((k) => k + 1);
-    setGameState("playing");
-    await loadLevel(0);
-  }
-
-  async function handleClick(character: GridCharacter) {
-    if (gameState !== "playing" || !sessionId || loading) return;
-
-    const correct = await validateClick(sessionId, character.id);
-
-    if (correct) {
-      setScore((prev) => prev + 1);
-      timerRef.current?.addTime(5);
-
-      const nextIndex = levelIndex + 1;
-      if (nextIndex >= LEVELS.length) {
-        setGameState("gameover");
-      } else {
-        setMessage(`Level ${nextIndex + 1}!`);
-        setLevelIndex(nextIndex);
-        await loadLevel(nextIndex);
-      }
-    } else {
-      setMessage("Wrong...");
-    }
-  }
+  const {
+    gameState,
+    setGameState,
+    currentLevel,
+    targetFigure,
+    characters,
+    message,
+    score,
+    loading,
+    timerKey,
+    timerRef,
+    startGame,
+    handleClick,
+  } = useGameLogic();
 
   if (gameState === "idle") {
     return <Idle onStartGame={startGame} />;
