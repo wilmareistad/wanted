@@ -1,4 +1,4 @@
-import Game from "./components/Game";
+import Game from "./components/Game/Game";
 import "./App.css";
 
 function App() {
@@ -7,7 +7,6 @@ function App() {
     <>
     <main>
       <div>
-        <h1>FIND THE IMPOSTOR</h1>
         <Game />
       </div>
     </main>

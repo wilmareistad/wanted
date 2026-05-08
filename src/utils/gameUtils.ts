@@ -1,5 +1,8 @@
-import Rune from "../assets/Rune.svg";
-import RedRune from "../assets/RedRune.svg";
+import Rune from "../assets/Rune.png";
+import RedRune from "../assets/RedRune.png";
+import ReallyRedRune from "../assets/ReallyRedRune.png";
+import WhiteRune from "../assets/WhiteRune.png";
+import BlackRune from "../assets/BlackRune.png";
 
 const SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL;
 const SUPABASE_ANON_KEY = import.meta.env.VITE_SUPABASE_ANON_KEY;
@@ -54,11 +57,24 @@ export async function validateClick(
 
 // figure help 
 export function resolveFigure(figure: string): string {
-  if (figure === "rune") return Rune;
-  if (figure === "redrune") return RedRune;
-  return figure;
+  const key = figure.toLowerCase();
+  switch (key) {
+    case "rune":
+      return Rune;
+    case "redrune":
+      return RedRune;
+    case "reallyredrune":
+      return ReallyRedRune;
+    case "whiterune":
+      return WhiteRune;
+    case "blackrune":
+      return BlackRune;
+    default:
+      return figure;
+  }
 }
 
 export function isImage(figure: string): boolean {
-  return figure.startsWith("/") || figure.includes(".svg") || figure.includes(".png");
+  const lower = figure.toLowerCase();
+  return lower.startsWith("/") || /\.(png|jpe?g|svg|gif)$/.test(lower);
 }
