@@ -15,7 +15,7 @@ export function Idle({ onStartGame }: IdleProps): ReactNode {
           <h3>INSTRUCTIONS</h3>
           <p>
             Runes family is visiting Yrgo but one is an imposter... Find the
-            wanted Rune and catch them before time runs out!{" "}
+            wanted Rune and catch them before time runs out!
           </p>
         </div>
         <div className={styles.box}>
@@ -27,7 +27,7 @@ export function Idle({ onStartGame }: IdleProps): ReactNode {
       <section className={styles.boxButtons}>
         <button className={styles.playBtn} onClick={onStartGame}>PLAY</button>
         <div className={styles.infoButtons}>
-          <button className={styles.tivoliBtn}>TIVOLI</button>
+          <button className={styles.tivoliBtn}>TO TIVOLI</button>
           <button className={styles.rewardBtn}>REWARDS?</button>
         </div>
       </section>
