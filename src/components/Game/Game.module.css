@@ -44,11 +44,18 @@
 
 .playfield {
   flex: 1;
-  width: 100%;
+  width: 100vw;
   display: flex;
   flex-direction: column;
   justify-content: center;
+  background-color: black;
 }
+@media (min-width: 401px) {
+  .playfield {
+    max-width: 425px;
+}
+}
+
 
 .loading {
   text-align: center;

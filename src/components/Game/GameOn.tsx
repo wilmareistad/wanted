@@ -43,7 +43,7 @@ export function GameOn({
           )}
         </div>
 
-        <Timer key={timerKey} ref={timerRef} initialTime={10} onTimeUp={onTimeUp} />
+        <Timer key={timerKey} ref={timerRef} initialTime={300} onTimeUp={onTimeUp} />
 
         <div className={styles.messageBox}>
           {message && <h2 className={styles.message}>{message}</h2>}
