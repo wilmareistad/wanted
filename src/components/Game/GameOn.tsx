@@ -33,7 +33,7 @@ export function GameOn({
       <div className={styles.header}>
         <p className={styles.headerText}>Level {currentLevel.level}</p>
         <p className={styles.headerText}>Score: {score}</p>
-        <h1 className={styles.title}>Wanted!</h1>
+        <h1 className={styles.title}>WANTED</h1>
 
         <div className={styles.targetBox}>
           {isImage(targetFigure) ? (
