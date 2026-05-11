@@ -1,9 +1,15 @@
-@keyframes scroll-left {
-  from { transform: translateX(0); }
-  to   { transform: translateX(-50%); }
+.carouselGrid {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
 }
 
-@keyframes scroll-right {
-  from { transform: translateX(-50%); }
-  to   { transform: translateX(0); }
+.canvasWrapper {
+  width: 100%;
+}
+
+.canvas {
+  display: block;
+  cursor: pointer;
 }
