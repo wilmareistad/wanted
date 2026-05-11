@@ -1,11 +1,11 @@
-import type { ReactNode } from "react";
+import { useCallback, useRef, type ReactNode } from "react";
 import Timer from "../Timer";
 import CarouselGrid from "../CarouselGrid";
 import { isImage } from "../../utils/gameUtils";
 import styles from "./Game.module.css";
 import type { GameOnProps } from "../../types/Game";
 
-export function GameOn({ 
+export function GameOn({
   currentLevel,
   targetFigure,
   characters,
@@ -19,45 +19,61 @@ export function GameOn({
 }: GameOnProps): ReactNode {
   const cols = Math.sqrt(currentLevel.gridCount);
 
-  return (
-    <div>
-      <p>Level {currentLevel.level}</p>
-      <p>Score: {score}</p>
-      <h1>Wanted!</h1>
+  const clickRef = useRef(onCharacterClick);
+  clickRef.current = onCharacterClick;
 
-      <div style={{ fontSize: "3rem", minHeight: "60px" }}>
-        {isImage(targetFigure) ? (
-          <img src={targetFigure} alt="target" style={{ height: "60px", width: "auto" }} />
-        ) : (
-          targetFigure
-        )}
+  const stableClick = useCallback(
+    (c: Parameters<typeof onCharacterClick>[0]) => clickRef.current(c),
+    [] // eslint-disable-line
+  );
+
+  return (
+    <div className={styles.wrapper}>
+      {/* Header */}
+      <div className={styles.header}>
+        <p className={styles.headerText}>Level {currentLevel.level}</p>
+        <p className={styles.headerText}>Score: {score}</p>
+        <h1 className={styles.title}>Wanted!</h1>
+
+        <div className={styles.targetBox}>
+          {isImage(targetFigure) ? (
+            <img src={targetFigure} alt="target" className={styles.targetImg} />
+          ) : (
+            targetFigure
+          )}
+        </div>
+
+        <Timer key={timerKey} ref={timerRef} initialTime={300} onTimeUp={onTimeUp} />
+
+        <div className={styles.messageBox}>
+          {message && <h2 className={styles.message}>{message}</h2>}
+        </div>
       </div>
 
-      <Timer key={timerKey} ref={timerRef} initialTime={10} onTimeUp={onTimeUp} />
-
-      <h2>{message}</h2>
-
-      {loading ? (
-        <p>Loading...</p>
-      ) : currentLevel.carousel ? (
-        <CarouselGrid characters={characters} cols={cols} onCharacterClick={onCharacterClick} />
-      ) : (
-        <div className={`grid ${styles[`grid${cols}`]}`}>
-          {characters.map((c) => (
-            <button
-              key={c.id}
-              onClick={() => onCharacterClick(c)}
-              style={{ fontSize: "2rem", minWidth: "60px", minHeight: "60px" }}
-            >
-              {isImage(c.figure) ? (
-                <img src={c.figure} alt="figure" style={{ width: "100%", height: "100%", objectFit: "contain" }} />
-              ) : (
-                c.figure
-              )}
-            </button>
-          ))}
-        </div>
-      )}
+      {/* Playfield */}
+      <div className={styles.playfield}>
+        {loading ? (
+          <p className={styles.loading}>Loading...</p>
+        ) : currentLevel.carousel ? (
+          <CarouselGrid characters={characters} cols={cols} onCharacterClick={stableClick} />
+        ) : (
+          <div className={`${styles.grid} ${styles[`grid${cols}`]}`}>
+            {characters.map((c) => (
+              <button
+                key={c.id}
+                onClick={() => onCharacterClick(c)}
+                className={styles.characterButton}
+              >
+                {isImage(c.figure) ? (
+                  <img src={c.figure} alt="figure" className={styles.characterImg} />
+                ) : (
+                  c.figure
+                )}
+              </button>
+            ))}
+          </div>
+        )}
+      </div>
     </div>
   );
 }

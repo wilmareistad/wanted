@@ -9,3 +9,9 @@ export const LEVELS: LevelConfig[] = [
   { level: 6, gridCount: 25, carousel: true },
   { level: 7, gridCount: 25, carousel: true },
 ];
+
+// export const LEVELS: LevelConfig[] = [
+//   { level: 5, gridCount: 16, carousel: true },
+//   { level: 6, gridCount: 25, carousel: true },
+//   { level: 7, gridCount: 25, carousel: true },
+// ];

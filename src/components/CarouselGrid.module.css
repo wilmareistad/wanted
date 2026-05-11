@@ -1,0 +1,15 @@
+.carouselGrid {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.canvasWrapper {
+  width: 100%;
+}
+
+.canvas {
+  display: block;
+  cursor: pointer;
+}
