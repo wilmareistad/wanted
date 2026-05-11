@@ -21,6 +21,8 @@ body {
 h1, h2{
   font-family: var(--headerFont);
   color: var(--textLight);
+  -webkit-text-stroke: 8px black;
+  paint-order: stroke fill;
 }
 
 h1 {
