@@ -24,7 +24,7 @@
 }
 
 .leaderboardH {
-  -webkit-text-stroke: 3px black;
+  -webkit-text-stroke: 4px black;
   paint-order: stroke fill;
 }
 
@@ -34,4 +34,34 @@
 
 h3 {
   margin: 0.5rem;
+}
+
+.playBtn {
+  background-color: #7ED267;
+}
+
+.rewardBtn {
+  background-color: var(--yrgoRed);
+  color: #FFEE00;
+}
+
+.tivoliBtn {
+  background-color: #7FB0C7;
+}
+
+
+@media (min-width: 768px) {
+  .infoBoxes {
+    display: flex;
+    gap: 4rem;
+  }
+
+  .box {
+    width: 30vw;
+  }
+
+  h1 {
+    font-size: 15rem;
+    margin-top: 1rem;
+  }
 }
