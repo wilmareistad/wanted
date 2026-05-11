@@ -1,4 +1,37 @@
+.idleContainer {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+}
 
-.yrgo {
-  color: #e51336;
+.yrgo, .leaderboardH {
+  color: var(--yrgoRed);
+}
+
+.box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 1rem;
+  background-color: var(--boxBackground);
+  border-radius: 8px;
+  box-shadow: 0 0 4px 3px rgba(0, 0, 0, 0.25);
+  font-size: 1.25rem;
+}
+
+.infoBoxes {
+  max-width: 80%;
+}
+
+.leaderboardH {
+  -webkit-text-stroke: 3px black;
+  paint-order: stroke fill;
+}
+
+.box p {
+  max-width: 90%;
+}
+
+h3 {
+  margin: 0.5rem;
 }
