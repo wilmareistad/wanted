@@ -55,8 +55,13 @@ export function GameOn({
         {loading ? (
           <p className={styles.loading}>Loading...</p>
         ) : currentLevel.carousel ? (
-          <CarouselGrid characters={characters} cols={cols} onCharacterClick={stableClick} />
-        ) : (
+  <CarouselGrid
+    characters={characters}
+    cols={cols}
+    onCharacterClick={stableClick}
+    speed={currentLevel.carouselSpeed ?? 60}
+  />
+) : (
           <div className={`${styles.grid} ${styles[`grid${cols}`]}`}>
             {characters.map((c) => (
               <button
