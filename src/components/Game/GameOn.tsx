@@ -1,9 +1,11 @@
-import { useCallback, useRef, type ReactNode } from "react";
+import { useCallback, useRef, useState, useEffect, type ReactNode } from "react";
 import Timer from "../Timer";
 import CarouselGrid from "../CarouselGrid";
 import { isImage } from "../../utils/gameUtils";
 import styles from "./Game.module.css";
 import type { GameOnProps } from "../../types/Game";
+
+const TRACK_H = 76 + 4;
 
 export function GameOn({
   currentLevel,
@@ -17,45 +19,76 @@ export function GameOn({
   onCharacterClick,
   onTimeUp,
 }: GameOnProps): ReactNode {
-  const cols = Math.sqrt(currentLevel.gridCount);
+  const playfieldRef = useRef<HTMLDivElement>(null);
+  const roRef = useRef<ResizeObserver | null>(null);
+  const [rowCount, setRowCount] = useState(5);
 
-  const clickRef = useRef(onCharacterClick);
-  clickRef.current = onCharacterClick;
+  useEffect(() => {
+    const node = playfieldRef.current;
+    if (!node) return;
+    roRef.current = new ResizeObserver((entries) => {
+      const h = entries[0].contentRect.height;
+      if (h > 0) setRowCount(Math.max(1, Math.floor(h / TRACK_H)));
+    });
+    roRef.current.observe(node);
+    return () => roRef.current?.disconnect();
+  }, []);
 
+const cols = currentLevel.carousel
+  ? currentLevel.carouselCols ?? Math.ceil(characters.length / rowCount)
+  : Math.round(Math.sqrt(currentLevel.gridCount));
+  const stableClickRef = useRef(onCharacterClick);
+  stableClickRef.current = onCharacterClick;
   const stableClick = useCallback(
-    (c: Parameters<typeof onCharacterClick>[0]) => clickRef.current(c),
-    [] // eslint-disable-line
+    (c: Parameters<typeof onCharacterClick>[0]) => stableClickRef.current(c),
+    []
   );
 
   return (
     <div className={styles.wrapper}>
-      {/* Header */}
       <div className={styles.header}>
-        <p className={styles.headerText}>Level {currentLevel.level}</p>
-        <p className={styles.headerText}>Score: {score}</p>
-        <h1 className={styles.title}>Wanted!</h1>
+        <h1 className={styles.title}>Wanted</h1>
 
-        <div className={styles.targetBox}>
-          {isImage(targetFigure) ? (
-            <img src={targetFigure} alt="target" className={styles.targetImg} />
-          ) : (
-            targetFigure
-          )}
+        <div className={styles.infoRow}>
+          <div className={styles.statBox}>
+            <span className={styles.statLabel}>SCORE:</span>
+            <span className={styles.statValue}>{score}</span>
+          </div>
+
+          <div className={styles.targetBox}>
+            {isImage(targetFigure) ? (
+              <img src={targetFigure} alt="target" className={styles.targetImg} />
+            ) : (
+              <span className={styles.targetEmoji}>{targetFigure}</span>
+            )}
+          </div>
+
+          <div className={styles.statBox}>
+            <span className={styles.statLabel}>LEVEL:</span>
+            <span className={styles.statValue}>{currentLevel.level}</span>
+          </div>
         </div>
 
-        <Timer key={timerKey} ref={timerRef} initialTime={300} onTimeUp={onTimeUp} />
+        <div className={styles.timerRow}>
+          <Timer key={timerKey} ref={timerRef} initialTime={300} onTimeUp={onTimeUp} />
+        </div>
 
         <div className={styles.messageBox}>
-          {message && <h2 className={styles.message}>{message}</h2>}
+          {message && <p className={styles.message}>{message}</p>}
         </div>
       </div>
 
-      {/* Playfield */}
-      <div className={styles.playfield}>
+      <div className={styles.playfield} ref={playfieldRef}>
         {loading ? (
           <p className={styles.loading}>Loading...</p>
         ) : currentLevel.carousel ? (
-          <CarouselGrid characters={characters} cols={cols} onCharacterClick={stableClick} />
+          <CarouselGrid
+            characters={characters}
+            cols={cols}
+            onCharacterClick={stableClick}
+            speed={currentLevel.carouselSpeed ?? 60}
+            gap={currentLevel.carouselGap ?? 20}
+          />
         ) : (
           <div className={`${styles.grid} ${styles[`grid${cols}`]}`}>
             {characters.map((c) => (
