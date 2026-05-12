@@ -11,13 +11,6 @@ export function Leaderboard() {
   }, []);
 
   return (
-    // <ol>
-    //   {entries.map((entry) => (
-    //     <li key={entry.id}>
-    //       {entry.name} — {entry.score}
-    //     </li>
-    //   ))}
-    // </ol>
     <ol className={styles.list}>
       {entries.map((entry, index) => (
         <li key={entry.id} className={styles.entry}>
