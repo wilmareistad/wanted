@@ -16,22 +16,18 @@
   background-color: var(--boxBackground);
   border-radius: 8px;
   box-shadow: inset 0 0 4px 3px rgba(0, 0, 0, 0.25);
-  font-size: 1.25rem;
+  padding: 0.5rem;
 }
 
 .infoBoxes {
   max-width: 80%;
   margin-top: 1.5rem;
-  margin-bottom: 1.5rem;
+  margin-bottom: 1rem;
 }
 
 .leaderboardH {
   -webkit-text-stroke: 4px black;
   paint-order: stroke fill;
-}
-
-.box p {
-  max-width: 90%;
 }
 
 h3 {
@@ -46,12 +42,12 @@ h3 {
 .rewardBtn {
   background-color: var(--yrgoRed);
   color: #FFEE00;
-  min-width: 170px;
+  /* min-width: 170px; */
 }
 
 .tivoliBtn {
   background-color: #7FB0C7;
-  min-width: 170px;
+  /* min-width: 170px; */
 }
 
 .infoButtons {
