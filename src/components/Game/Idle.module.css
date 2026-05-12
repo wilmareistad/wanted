@@ -30,7 +30,7 @@
   paint-order: stroke fill;
 }
 
-h3 {
+.box h3 {
   margin: 0.5rem;
 }
 
@@ -64,12 +64,12 @@ h3 {
     width: 30vw;
   }
 
-h1 {
+.idleContainer h1 {
     font-size: 15rem;
     margin-top: 0.5rem;
   }
 
-h2 {
+.idleContainer h2 {
   margin-top: -3rem;
 }
 }
