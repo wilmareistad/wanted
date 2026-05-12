@@ -29,7 +29,7 @@ export function Idle({ onStartGame }: IdleProps): ReactNode {
         <button className={styles.playBtn} onClick={onStartGame}>PLAY</button>
         <div className={styles.infoButtons}>
           <button className={styles.tivoliBtn}>TO TIVOLI</button>
-          <button className={styles.rewardBtn}>REWARDS?</button>
+          <button className={styles.rewardBtn}>REWARDS</button>
         </div>
       </section>
     </div>
