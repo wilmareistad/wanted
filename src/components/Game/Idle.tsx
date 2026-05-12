@@ -1,6 +1,7 @@
 import type { ReactNode } from "react";
 import type { IdleProps } from "../../types/Game";
 import styles from "./Idle.module.css";
+import { Leaderboard } from "../Leaderboard";
 
 export function Idle({ onStartGame }: IdleProps): ReactNode {
   return (
@@ -20,7 +21,7 @@ export function Idle({ onStartGame }: IdleProps): ReactNode {
         </div>
         <div className={styles.box}>
           <h3 className={styles.leaderboardH}>LEADERBOARD</h3>
-          <p>leaderbord ruta</p>
+          <Leaderboard />
         </div>
       </section>
 
@@ -28,7 +29,7 @@ export function Idle({ onStartGame }: IdleProps): ReactNode {
         <button className={styles.playBtn} onClick={onStartGame}>PLAY</button>
         <div className={styles.infoButtons}>
           <button className={styles.tivoliBtn}>TO TIVOLI</button>
-          <button className={styles.rewardBtn}>REWARDS?</button>
+          <button className={styles.rewardBtn}>REWARDS</button>
         </div>
       </section>
     </div>
