@@ -6,6 +6,7 @@ export type LevelConfig = {
   carousel?: boolean;
   carouselSpeed?: number;
   carouselGap?: number;
+  carouselCols?: number;
 };
 
 export type CarouselProps = {

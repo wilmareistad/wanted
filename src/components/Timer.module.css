@@ -1,0 +1,9 @@
+.timer {
+  margin: 0;
+  font-size: 1.8rem;
+  color: var(--textLight);
+  -webkit-text-stroke: 4px black;
+  paint-order: stroke fill;
+  font-family: var(--headerFont);
+  letter-spacing: 5px;
+}
