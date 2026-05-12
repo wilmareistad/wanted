@@ -2,7 +2,6 @@ import { useGameLogic } from "./UseGameLogic";
 import { Idle } from "./Idle";
 import { GameOn } from "./GameOn";
 import { GameOver } from "./GameOver";
-import { useCentralbank } from "../../hooks/useCentralbank";
 
 export default function Game() {
   const {
