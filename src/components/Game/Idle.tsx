@@ -3,7 +3,7 @@ import type { IdleProps } from "../../types/Game";
 import styles from "./Idle.module.css";
 import { Leaderboard } from "../Leaderboard";
 import { Navigation } from "./Navigation";
-import Instructions from '../Instructions';
+import Instructions from "../Instructions";
 
 export function Idle({ onStartGame }: IdleProps): ReactNode {
   return (
@@ -15,10 +15,7 @@ export function Idle({ onStartGame }: IdleProps): ReactNode {
 
       <section className={styles.infoBoxes}>
         <Instructions />
-        <div className={styles.box}>
-          <h3 className={styles.leaderboardH}>LEADERBOARD</h3>
-          <Leaderboard />
-        </div>
+        <Leaderboard />
       </section>
 
       <Navigation onStartGame={onStartGame} />

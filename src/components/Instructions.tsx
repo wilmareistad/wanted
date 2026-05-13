@@ -1,4 +1,4 @@
-import styles from "./Game/Idle.module.css";
+import styles from "./InfoBoxes.module.css";
 
 export default function Instructions() {
   return (

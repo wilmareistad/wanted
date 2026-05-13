@@ -35,11 +35,7 @@ export function GameOver({
   </div>
 </div>
 
-
-        <div className={styles.box}>
-          <h3 className={styles.leaderboardH}>LEADERBOARD</h3>
           <Leaderboard />
-        </div>
       </section>
 
 
