@@ -49,7 +49,7 @@ export function useGameLogic() {
 
       const nextIndex = levelIndex + 1;
       if (nextIndex >= LEVELS.length) {
-        await endGame(nextIndex);
+        await endGame(currentLevel.level);
         setGameState("gameover");
       } else {
         setLevelIndex(nextIndex);

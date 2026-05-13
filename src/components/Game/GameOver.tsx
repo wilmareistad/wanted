@@ -27,7 +27,7 @@ export function GameOver({
 
             <div className={styles.statItem}>
               <span className={styles.statLabel}>Level:</span>
-              <span className={styles.statValue}>{currentLevel.level}</span>
+              <span className={styles.statValue}>{score}</span>
             </div>
           </div>
 
