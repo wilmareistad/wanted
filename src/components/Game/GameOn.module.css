@@ -124,6 +124,11 @@
 .grid3 { grid-template-columns: repeat(3, 1fr); }
 .grid4 { grid-template-columns: repeat(4, 1fr); }
 .grid5 { grid-template-columns: repeat(5, 1fr); }
+.grid6 { grid-template-columns: repeat(6, 1fr); }
+.grid7 { grid-template-columns: repeat(7, 1fr); }
+.grid8 { grid-template-columns: repeat(8, 1fr); }
+.grid9 { grid-template-columns: repeat(9, 1fr); }
+.grid10 { grid-template-columns: repeat(10, 1fr); }
 
 .characterButton {
   font-size: 2rem;

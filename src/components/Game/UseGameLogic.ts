@@ -45,7 +45,7 @@ export function useGameLogic() {
 
     if (correct) {
       setScore((prev) => prev + 1);
-      timerRef.current?.addTime(5);
+      timerRef.current?.addTime(2);
 
       const nextIndex = levelIndex + 1;
       if (nextIndex >= LEVELS.length) {

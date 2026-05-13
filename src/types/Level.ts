@@ -8,6 +8,7 @@ export type LevelConfig = {
   carouselGap?: number;
   carouselCols?: number;
   carouselShakiness?: number; // 0-1, greater = more skakning
+  carouselSameDirection?: boolean; 
 };
 
 export type CarouselProps = {
@@ -17,6 +18,7 @@ export type CarouselProps = {
   speed?: number;
   gap?: number;
   shakiness?: number; // 0-1, greater = more skakning
+  sameDirection?: boolean;
 };
 
 export type CarouselRowProps = {

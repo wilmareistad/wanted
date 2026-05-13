@@ -15,6 +15,7 @@ const CarouselGrid = memo(function CarouselGrid({
   speed = 60,
   gap = 20,
   shakiness = 0,
+  sameDirection = false,
 }: CarouselProps) {
   const rows: Character[][] = [];
   for (let i = 0; i < characters.length; i += cols) {
@@ -23,17 +24,27 @@ const CarouselGrid = memo(function CarouselGrid({
 
   return (
     <div className={styles.carouselGrid}>
-      {rows.map((row, rowIndex) => (
-        <CarouselRow
-          key={rowIndex}
-          items={row}
-          direction={rowIndex % 2 === 0 ? "left" : "right"}
-          onCharacterClick={onCharacterClick}
-          speed={speed}
-          gap={gap}
-          shakiness={shakiness}
-        />
-      ))}
+      {rows.map((row, rowIndex) => {
+        // Nomral direction: left/right
+        let direction: "left" | "right" = rowIndex % 2 === 0 ? "left" : "right";
+        
+        // If sameDirection is true, switch all directions
+        if (sameDirection) {
+          direction = direction === "left" ? "right" : "left";
+        }
+        
+        return (
+          <CarouselRow
+            key={rowIndex}
+            items={row}
+            direction={direction}
+            onCharacterClick={onCharacterClick}
+            speed={speed}
+            gap={gap}
+            shakiness={shakiness}
+          />
+        );
+      })}
     </div>
   );
 });
