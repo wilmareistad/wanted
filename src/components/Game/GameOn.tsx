@@ -96,6 +96,8 @@ const cols = currentLevel.carousel
           onCharacterClick={stableClick}
           speed={currentLevel.carouselSpeed ?? 60}
           gap={currentLevel.carouselGap ?? 20}
+          shakiness={currentLevel.carouselShakiness ?? 0}
+          sameDirection={currentLevel.carouselSameDirection ?? false}
           />
         ) : (
           <div className={`${styles.grid} ${styles[`grid${cols}`]}`}>

@@ -14,6 +14,8 @@ const CarouselGrid = memo(function CarouselGrid({
   onCharacterClick,
   speed = 60,
   gap = 20,
+  shakiness = 0,
+  sameDirection = false,
 }: CarouselProps) {
   const rows: Character[][] = [];
   for (let i = 0; i < characters.length; i += cols) {
@@ -22,16 +24,27 @@ const CarouselGrid = memo(function CarouselGrid({
 
   return (
     <div className={styles.carouselGrid}>
-      {rows.map((row, rowIndex) => (
-        <CarouselRow
-          key={rowIndex}
-          items={row}
-          direction={rowIndex % 2 === 0 ? "left" : "right"}
-          onCharacterClick={onCharacterClick}
-          speed={speed}
-          gap={gap}
-        />
-      ))}
+      {rows.map((row, rowIndex) => {
+        // Nomral direction: left/right
+        let direction: "left" | "right" = rowIndex % 2 === 0 ? "left" : "right";
+        
+        // If sameDirection is true, switch all directions
+        if (sameDirection) {
+          direction = direction === "left" ? "right" : "left";
+        }
+        
+        return (
+          <CarouselRow
+            key={rowIndex}
+            items={row}
+            direction={direction}
+            onCharacterClick={onCharacterClick}
+            speed={speed}
+            gap={gap}
+            shakiness={shakiness}
+          />
+        );
+      })}
     </div>
   );
 });
@@ -44,12 +57,14 @@ function CarouselRow({
   onCharacterClick,
   speed,
   gap,
+  shakiness,
 }: {
   items: Character[];
   direction: "left" | "right";
   onCharacterClick: (c: Character) => void;
   speed: number;
   gap: number;
+  shakiness: number;
 }) {
   const stripRef = useRef<HTMLDivElement>(null);
   const offsetRef = useRef(0);
@@ -84,8 +99,12 @@ function CarouselRow({
         if (offsetRef.current >= 0) offsetRef.current -= oneSetW;
       }
 
+      const shakeAmount = shakiness * 8;
+      const shakeX = (Math.random() - 0.5) * shakeAmount;
+      const shakeY = (Math.random() - 0.5) * shakeAmount;
+
       if (stripRef.current) {
-        stripRef.current.style.transform = `translateX(${offsetRef.current}px)`;
+        stripRef.current.style.transform = `translateX(${offsetRef.current + shakeX}px) translateY(${shakeY}px)`;
       }
 
       rafRef.current = requestAnimationFrame(tick);
@@ -96,7 +115,7 @@ function CarouselRow({
       cancelAnimationFrame(rafRef.current);
       lastTsRef.current = null;
     };
-  }, [direction, speed, oneSetW]);
+  }, [direction, speed, oneSetW, shakiness]);
 
   return (
     <div className={styles.track}>
