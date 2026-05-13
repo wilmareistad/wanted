@@ -31,6 +31,7 @@ export interface GameOnProps {
 
 export interface GameOverProps {
   score: number;
+  currentLevel: (typeof LEVELS)[0];
   onPlayAgain: () => void;
 }
 

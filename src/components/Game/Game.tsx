@@ -40,5 +40,5 @@ export default function Game() {
     );
   }
 
-  return <GameOver score={score} onPlayAgain={startGame} />;
+  return <GameOver score={score} currentLevel={currentLevel} onPlayAgain={startGame} />;
 }
