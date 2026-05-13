@@ -4,37 +4,17 @@
   flex-direction: column;
 }
 
-.yrgo, .leaderboardH {
+.yrgo {
   color: var(--yrgoRed);
-}
-
-.box {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  margin: 1rem;
-  background-color: var(--boxBackground);
-  border-radius: 8px;
-  box-shadow: inset 0 0 4px 3px rgba(0, 0, 0, 0.25);
-  font-size: 1.25rem;
 }
 
 .infoBoxes {
   max-width: 80%;
   margin-top: 1.5rem;
-  margin-bottom: 1.5rem;
+  margin-bottom: 1rem;
 }
 
-.leaderboardH {
-  -webkit-text-stroke: 4px black;
-  paint-order: stroke fill;
-}
-
-.box p {
-  max-width: 90%;
-}
-
-h3 {
+.box h3 {
   margin: 0.5rem;
 }
 
@@ -46,12 +26,12 @@ h3 {
 .rewardBtn {
   background-color: var(--yrgoRed);
   color: #FFEE00;
-  min-width: 170px;
+  /* min-width: 170px; */
 }
 
 .tivoliBtn {
   background-color: #7FB0C7;
-  min-width: 170px;
+  /* min-width: 170px; */
 }
 
 .infoButtons {
@@ -68,12 +48,18 @@ h3 {
     width: 30vw;
   }
 
-h1 {
+.idleContainer h1 {
     font-size: 15rem;
     margin-top: 0.5rem;
   }
 
-h2 {
+.idleContainer h2 {
   margin-top: -3rem;
 }
+}
+
+@media (max-width: 1000px) { 
+  .infoBoxes {
+    gap: 0;
+  }
 }

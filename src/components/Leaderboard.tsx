@@ -1,0 +1,28 @@
+import { useEffect, useState } from "react";
+import { getTopFive } from "../utils/leaderboard";
+import type { LeaderboardEntry } from "../types/Leaderboard";
+import styles from "./InfoBoxes.module.css";
+
+export function Leaderboard() {
+  const [entries, setEntries] = useState<LeaderboardEntry[]>([]);
+
+  useEffect(() => {
+    getTopFive().then(setEntries);
+  }, []);
+
+  return (
+    <div className={styles.box}>
+      <h3 className={styles.leaderboardH}>LEADERBOARD</h3>
+      <ol className={styles.list}>
+        {entries.map((entry, index) => (
+          <li key={entry.id} className={styles.entry}>
+            <span className={styles.rank}>{index + 1}.</span>
+            <span className={styles.name}>{entry.name}</span>
+            <span className={styles.dots} />
+            <span className={styles.score}>{entry.score}</span>
+          </li>
+        ))}
+      </ol>
+    </div>
+  );
+}
