@@ -15,7 +15,7 @@ export function useGameLogic() {
   const [timerKey, setTimerKey] = useState(0);
   const [loading, setLoading] = useState(false);
   const timerRef = useRef<TimerHandle>(null);
-  const { startGame: startCentralbankGame, endGame } = useCentralbank();
+  const { startGame: startCentralbankGame, endGame, transaction } = useCentralbank();
 
   const currentLevel = LEVELS[levelIndex];
 
@@ -73,5 +73,6 @@ export function useGameLogic() {
     timerRef,
     startGame,
     handleClick,
+    transaction,
   };
 }

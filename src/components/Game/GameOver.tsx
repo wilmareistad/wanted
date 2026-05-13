@@ -3,16 +3,16 @@ import type { GameOverProps } from "../../types/Game";
 import styles from "./GameOver.module.css";
 import { Leaderboard } from "../Leaderboard";
 import { Navigation } from "./Navigation";
-import { useCentralbank } from "../../hooks/useCentralbank";
 import { calculatePayout } from "../../utils/gameUtils";
 
 export function GameOver({
   score,
   currentLevel,
   onPlayAgain,
+  transaction,
 }: GameOverProps): ReactNode {
-  const { transaction } = useCentralbank();
   const euro = calculatePayout(currentLevel.level);
+
   return (
     <div className={styles.overContainer}>
       <h1>GAME OVER</h1>

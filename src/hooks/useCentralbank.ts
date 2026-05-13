@@ -20,8 +20,9 @@ export function useCentralbank() {
   }, []);
 
   async function startGame() {
-    if (!identityToken) throw new Error("No identity token");
-    const txn = await createTransaction(identityToken);
+    // Use identity token from URL if it exist, otherwise mock
+    const token = identityToken || "mock-token";
+    const txn = await createTransaction(token);
     setTransaction(txn);
     return txn.stamp;
   }
