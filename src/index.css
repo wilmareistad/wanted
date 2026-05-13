@@ -1,6 +1,40 @@
+:root {
+  --headerFont: "Jersey 10", sans-serif;
+  --textLight: #ffffff;
+  --boxBackground: #D9D9D9;
+  --yrgoRed: #e51336
+}
 
 body {
   margin: 0;
+  background-image: url("/src/assets/BrickBg.png");
+  background-size: auto 100%;
+  background-position: center;
+  background-repeat:repeat;
+  background-attachment: fixed;
+  letter-spacing: 5px;
+  font-family: var(--headerFont);
+}
+
+h1, h2 {
+  color: var(--textLight);
+  -webkit-text-stroke: 8px black;
+  paint-order: stroke fill;
+}
+
+h1 {
+  font-size: 6rem;
+  margin-bottom: 0;
+  margin-top: 1rem;
+}
+
+h2 {
+  font-size: 4rem;
+  margin: 0.5rem;
+}
+
+h3 {
+  font-size: 2rem;
 }
 
 .grid {
@@ -17,4 +51,12 @@ button {
   background: none;
   border: none;
   cursor: pointer;
+  color: var(--textLight);
+  -webkit-text-stroke: 4px black;
+  paint-order: stroke fill;
+  font-family: var(--headerFont);
+  border-radius: 5px;
+  margin: 1rem;
+  padding: 0rem 1rem;
+  letter-spacing: 3px;
 }

@@ -1,5 +1,6 @@
 import { useEffect, useState, useImperativeHandle, forwardRef } from "react";
 import type { TimerProps } from "../types/Game";
+import styles from "./Timer.module.css";
 
 export type TimerHandle = {
   addTime: (seconds: number) => void;
@@ -37,7 +38,7 @@ const Timer = forwardRef<TimerHandle, TimerProps>(({ initialTime, onTimeUp }, re
     }
   }, [timeLeft, onTimeUp]);
 
-  return <h3>Time: {timeLeft}</h3>;
+return <p className={styles.timer}>Time: {timeLeft}</p>;
 });
 
 export default Timer;

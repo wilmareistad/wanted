@@ -17,6 +17,7 @@ export default function Game() {
     timerRef,
     startGame,
     handleClick,
+    transaction,
   } = useGameLogic();
 
   if (gameState === "idle") {
@@ -40,5 +41,5 @@ export default function Game() {
     );
   }
 
-  return <GameOver score={score} onPlayAgain={startGame} />;
+  return <GameOver score={score} currentLevel={currentLevel} onPlayAgain={startGame} transaction={transaction} />;
 }

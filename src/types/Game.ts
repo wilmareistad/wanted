@@ -2,6 +2,7 @@ import type { LEVELS } from "../data/Levels";
 import type { GridCharacter } from "../utils/gameUtils";
 import type { Character } from "./Character";
 import type { TimerHandle } from "../components/Timer";
+import type { Transaction } from "./CentralBank";
 
 export type GameState = {
   characters: Character[];
@@ -31,7 +32,9 @@ export interface GameOnProps {
 
 export interface GameOverProps {
   score: number;
+  currentLevel: (typeof LEVELS)[0];
   onPlayAgain: () => void;
+  transaction: Transaction | null;
 }
 
 export interface IdleProps {

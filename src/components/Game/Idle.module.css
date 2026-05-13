@@ -1,0 +1,65 @@
+.idleContainer {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+}
+
+.yrgo {
+  color: var(--yrgoRed);
+}
+
+.infoBoxes {
+  max-width: 80%;
+  margin-top: 1.5rem;
+  margin-bottom: 1rem;
+}
+
+.box h3 {
+  margin: 0.5rem;
+}
+
+.playBtn {
+  background-color: #7ED267;
+  padding: 0 2rem;
+}
+
+.rewardBtn {
+  background-color: var(--yrgoRed);
+  color: #FFEE00;
+  /* min-width: 170px; */
+}
+
+.tivoliBtn {
+  background-color: #7FB0C7;
+  /* min-width: 170px; */
+}
+
+.infoButtons {
+  margin-bottom: 1rem;
+}
+
+@media (min-width: 768px) {
+  .infoBoxes {
+    display: flex;
+    gap: 4rem;
+  }
+
+  .box {
+    width: 30vw;
+  }
+
+.idleContainer h1 {
+    font-size: 15rem;
+    margin-top: 0.5rem;
+  }
+
+.idleContainer h2 {
+  margin-top: -3rem;
+}
+}
+
+@media (max-width: 1000px) { 
+  .infoBoxes {
+    gap: 0;
+  }
+}

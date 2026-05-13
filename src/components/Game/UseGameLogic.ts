@@ -2,6 +2,7 @@ import { useState, useRef } from "react";
 import type { TimerHandle } from "../Timer";
 import { LEVELS } from "../../data/Levels";
 import { generateLevel, validateClick, resolveFigure, type GridCharacter } from "../../utils/gameUtils";
+import { useCentralbank } from "../../hooks/useCentralbank";
 
 export function useGameLogic() {
   const [gameState, setGameState] = useState<"idle" | "playing" | "gameover">("idle");
@@ -14,6 +15,7 @@ export function useGameLogic() {
   const [timerKey, setTimerKey] = useState(0);
   const [loading, setLoading] = useState(false);
   const timerRef = useRef<TimerHandle>(null);
+  const { startGame: startCentralbankGame, endGame, transaction } = useCentralbank();
 
   const currentLevel = LEVELS[levelIndex];
 
@@ -32,6 +34,7 @@ export function useGameLogic() {
     setMessage("");
     setTimerKey((k) => k + 1);
     setGameState("playing");
+    await startCentralbankGame();
     await loadLevel(0);
   }
 
@@ -42,10 +45,11 @@ export function useGameLogic() {
 
     if (correct) {
       setScore((prev) => prev + 1);
-      timerRef.current?.addTime(5);
+      timerRef.current?.addTime(2);
 
       const nextIndex = levelIndex + 1;
       if (nextIndex >= LEVELS.length) {
+        await endGame(currentLevel.level);
         setGameState("gameover");
       } else {
         setLevelIndex(nextIndex);
@@ -69,5 +73,6 @@ export function useGameLogic() {
     timerRef,
     startGame,
     handleClick,
+    transaction,
   };
 }
