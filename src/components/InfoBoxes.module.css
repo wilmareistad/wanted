@@ -1,0 +1,47 @@
+.list {
+  list-style: none;
+  padding: 0;
+  width: 100%;
+}
+
+.entry {
+  display: flex;
+  align-items: baseline;
+  gap: 0.5rem;
+}
+
+.name {
+  white-space: nowrap;
+}
+
+.dots {
+  flex: 1;
+  border-bottom: 2px dotted currentColor;
+  margin-bottom: 4px;
+}
+
+.score {
+  white-space: nowrap;
+}
+
+.box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 1rem;
+  background-color: var(--boxBackground);
+  border-radius: 8px;
+  box-shadow: inset 0 0 4px 3px rgba(0, 0, 0, 0.25);
+  padding: 0.5rem;
+}
+
+.box h3 {
+  margin: 0.5rem;
+}
+
+@media (min-width: 768px) {
+
+  .box {
+    width: 30vw;
+  }
+}

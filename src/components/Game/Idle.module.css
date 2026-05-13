@@ -8,17 +8,6 @@
   color: var(--yrgoRed);
 }
 
-.box {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  margin: 1rem;
-  background-color: var(--boxBackground);
-  border-radius: 8px;
-  box-shadow: inset 0 0 4px 3px rgba(0, 0, 0, 0.25);
-  padding: 0.5rem;
-}
-
 .infoBoxes {
   max-width: 80%;
   margin-top: 1.5rem;
@@ -72,4 +61,10 @@
 .idleContainer h2 {
   margin-top: -3rem;
 }
+}
+
+@media (max-width: 1000px) { 
+  .infoBoxes {
+    gap: 0;
+  }
 }
