@@ -1,6 +1,8 @@
 import { useCallback, useRef, useState, useEffect, type ReactNode } from "react";
 import Timer from "../Timer";
 import CarouselGrid from "../CarouselGrid";
+import Instructions from "../Instructions";
+import { Leaderboard } from "../Leaderboard";
 import { isImage } from "../../utils/gameUtils";
 import styles from "./Game.module.css";
 import type { GameOnProps } from "../../types/Game";
@@ -106,6 +108,11 @@ const cols = currentLevel.carousel
             ))}
           </div>
         )}
+      </div>
+
+      <div className={styles.infoSection}>
+        <Instructions />
+        <Leaderboard />
       </div>
     </div>
   );

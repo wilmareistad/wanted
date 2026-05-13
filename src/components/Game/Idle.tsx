@@ -3,6 +3,7 @@ import type { IdleProps } from "../../types/Game";
 import styles from "./Idle.module.css";
 import { Leaderboard } from "../Leaderboard";
 import { Navigation } from "./Navigation";
+import Instructions from '../Instructions';
 
 export function Idle({ onStartGame }: IdleProps): ReactNode {
   return (
@@ -13,13 +14,7 @@ export function Idle({ onStartGame }: IdleProps): ReactNode {
       </h2>
 
       <section className={styles.infoBoxes}>
-        <div className={styles.box}>
-          <h3>INSTRUCTIONS</h3>
-          <p>
-            Runes family is visiting Yrgo but one is an imposter... Find the
-            wanted Rune and catch them before time runs out!
-          </p>
-        </div>
+        <Instructions />
         <div className={styles.box}>
           <h3 className={styles.leaderboardH}>LEADERBOARD</h3>
           <Leaderboard />
