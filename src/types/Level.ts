@@ -7,6 +7,7 @@ export type LevelConfig = {
   carouselSpeed?: number;
   carouselGap?: number;
   carouselCols?: number;
+  carouselShakiness?: number; // 0-1, greater = more skakning
 };
 
 export type CarouselProps = {
@@ -15,6 +16,7 @@ export type CarouselProps = {
   onCharacterClick: (c: Character) => void;
   speed?: number;
   gap?: number;
+  shakiness?: number; // 0-1, greater = more skakning
 };
 
 export type CarouselRowProps = {

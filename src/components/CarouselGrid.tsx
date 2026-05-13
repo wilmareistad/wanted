@@ -14,6 +14,7 @@ const CarouselGrid = memo(function CarouselGrid({
   onCharacterClick,
   speed = 60,
   gap = 20,
+  shakiness = 0,
 }: CarouselProps) {
   const rows: Character[][] = [];
   for (let i = 0; i < characters.length; i += cols) {
@@ -30,6 +31,7 @@ const CarouselGrid = memo(function CarouselGrid({
           onCharacterClick={onCharacterClick}
           speed={speed}
           gap={gap}
+          shakiness={shakiness}
         />
       ))}
     </div>
@@ -44,12 +46,14 @@ function CarouselRow({
   onCharacterClick,
   speed,
   gap,
+  shakiness,
 }: {
   items: Character[];
   direction: "left" | "right";
   onCharacterClick: (c: Character) => void;
   speed: number;
   gap: number;
+  shakiness: number;
 }) {
   const stripRef = useRef<HTMLDivElement>(null);
   const offsetRef = useRef(0);
@@ -84,8 +88,12 @@ function CarouselRow({
         if (offsetRef.current >= 0) offsetRef.current -= oneSetW;
       }
 
+      const shakeAmount = shakiness * 8;
+      const shakeX = (Math.random() - 0.5) * shakeAmount;
+      const shakeY = (Math.random() - 0.5) * shakeAmount;
+
       if (stripRef.current) {
-        stripRef.current.style.transform = `translateX(${offsetRef.current}px)`;
+        stripRef.current.style.transform = `translateX(${offsetRef.current + shakeX}px) translateY(${shakeY}px)`;
       }
 
       rafRef.current = requestAnimationFrame(tick);
@@ -96,7 +104,7 @@ function CarouselRow({
       cancelAnimationFrame(rafRef.current);
       lastTsRef.current = null;
     };
-  }, [direction, speed, oneSetW]);
+  }, [direction, speed, oneSetW, shakiness]);
 
   return (
     <div className={styles.track}>
