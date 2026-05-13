@@ -4,7 +4,7 @@
   flex-direction: column;
 }
 
-.yrgo, .leaderboardH {
+.yrgo {
   color: var(--yrgoRed);
 }
 
@@ -12,11 +12,6 @@
   max-width: 80%;
   margin-top: 1.5rem;
   margin-bottom: 1rem;
-}
-
-.leaderboardH {
-  -webkit-text-stroke: 4px black;
-  paint-order: stroke fill;
 }
 
 .box h3 {

@@ -40,8 +40,13 @@
 }
 
 @media (min-width: 768px) {
-
   .box {
     width: 30vw;
   }
+}
+
+.leaderboardH {
+  color: var(--yrgoRed);
+  -webkit-text-stroke: 4px black;
+  paint-order: stroke fill;
 }
