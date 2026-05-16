@@ -1,8 +1,10 @@
 import { useCallback, useRef, useState, useEffect, type ReactNode } from "react";
 import Timer from "../Timer";
 import CarouselGrid from "../CarouselGrid";
+import Instructions from "../Instructions";
+import { Leaderboard } from "../Leaderboard";
 import { isImage } from "../../utils/gameUtils";
-import styles from "./Game.module.css";
+import styles from "./GameOn.module.css";
 import type { GameOnProps } from "../../types/Game";
 
 const TRACK_H = 76 + 4;
@@ -45,8 +47,9 @@ const cols = currentLevel.carousel
   );
 
   return (
+
     <div className={styles.wrapper}>
-      <div className={styles.header}>
+    <div className={styles.header}>
         <h1 className={styles.title}>Wanted</h1>
 
         <div className={styles.infoRow}>
@@ -70,7 +73,7 @@ const cols = currentLevel.carousel
         </div>
 
         <div className={styles.timerRow}>
-          <Timer key={timerKey} ref={timerRef} initialTime={300} onTimeUp={onTimeUp} />
+          <Timer key={timerKey} ref={timerRef} initialTime={10} onTimeUp={onTimeUp} />
         </div>
 
         <div className={styles.messageBox}>
@@ -78,24 +81,31 @@ const cols = currentLevel.carousel
         </div>
       </div>
 
+        <div className={styles.infoSection}>
+          <div className={styles.sideInfo}>
+        <Instructions />
+          </div>
+
       <div className={styles.playfield} ref={playfieldRef}>
         {loading ? (
           <p className={styles.loading}>Loading...</p>
         ) : currentLevel.carousel ? (
           <CarouselGrid
-            characters={characters}
-            cols={cols}
-            onCharacterClick={stableClick}
-            speed={currentLevel.carouselSpeed ?? 60}
-            gap={currentLevel.carouselGap ?? 20}
+          characters={characters}
+          cols={cols}
+          onCharacterClick={stableClick}
+          speed={currentLevel.carouselSpeed ?? 60}
+          gap={currentLevel.carouselGap ?? 20}
+          shakiness={currentLevel.carouselShakiness ?? 0}
+          sameDirection={currentLevel.carouselSameDirection ?? false}
           />
         ) : (
           <div className={`${styles.grid} ${styles[`grid${cols}`]}`}>
             {characters.map((c) => (
               <button
-                key={c.id}
-                onClick={() => onCharacterClick(c)}
-                className={styles.characterButton}
+              key={c.id}
+              onClick={() => onCharacterClick(c)}
+              className={styles.characterButton}
               >
                 {isImage(c.figure) ? (
                   <img src={c.figure} alt="figure" className={styles.characterImg} />
@@ -107,6 +117,11 @@ const cols = currentLevel.carousel
           </div>
         )}
       </div>
-    </div>
+<div className={styles.sideInfo}>
+
+        <Leaderboard />
+</div>
+      </div>
+      </div>
   );
 }
