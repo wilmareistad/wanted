@@ -4,11 +4,9 @@ import type { Transaction } from "../types/CentralBank"
 
 const BASE_URL = import.meta.env.VITE_CENTRALBANK_URL;
 const API_KEY = import.meta.env.VITE_CENTRALBANK_API_KEY;
-const AMUSEMENT_UUID = import.meta.env.VITE_AMUSEMENT_UUID;
 
 const headers = {
   "Content-Type": "application/json",
-  "X-Api-Key": API_KEY,
 };
 
 export async function getIdentity(token: string): Promise<CentralbankUser> {
@@ -27,7 +25,7 @@ export async function createTransaction(identityToken: string): Promise<Transact
     body: JSON.stringify({
       identity_token: identityToken,
       amount: 2,
-      amusement_uuid: AMUSEMENT_UUID,
+      api_key: API_KEY,
     }),
   });
   if (!res.ok) throw new Error("Transaction failed");
@@ -41,7 +39,7 @@ export async function sendPayout(transactionId: string, levelsCleared: number): 
   const res = await fetch(`${BASE_URL}/transactions/${transactionId}/payout`, {
     method: "POST",
     headers,
-    body: JSON.stringify({ amount }),
+    body: JSON.stringify({ amount, api_key: API_KEY }),
   });
   if (!res.ok) throw new Error("Payout failed");
 }
