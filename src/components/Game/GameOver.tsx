@@ -5,11 +5,13 @@ import styles from "./GameOver.module.css";
 import { Leaderboard } from "../Leaderboard";
 import { Navigation } from "./Navigation";
 import Info from "../Info";
+import { calculatePayout } from "../../utils/gameUtils";
 
 export function GameOver({
   score,
   currentLevel,
   onPlayAgain,
+  transaction,
 }: GameOverProps): ReactNode {
   const [infoMode, setInfoMode] = useState<null | "play" | "info">(null);
 
@@ -19,6 +21,7 @@ export function GameOver({
     setInfoMode(null);
     onPlayAgain();
   };
+  const euro = calculatePayout(currentLevel.level);
 
   return (
     <div className={styles.overContainer}>
@@ -34,13 +37,12 @@ export function GameOver({
 
             <div className={styles.statItem}>
               <span className={styles.statLabel}>Level:</span>
-              <span className={styles.statValue}>{currentLevel.level}</span>
+              <span className={styles.statValue}>{score}</span>
             </div>
           </div>
 
           <div className={styles.rewardBox}>
-            <h3 className={styles.rewardTitle}>Reward</h3>
-            <div>euro: stamp:</div>
+            <div>€{euro} | Stamp: {transaction?.stamp}</div>
           </div>
         </div>
 

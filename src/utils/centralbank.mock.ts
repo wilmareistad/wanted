@@ -6,7 +6,9 @@ export async function getIdentity(_token: string): Promise<CentralbankUser> {
 }
 
 export async function createTransaction(_identityToken: string): Promise<Transaction> {
-  return { id: "mock-transaction-abc", stamp: "gold tucan" };
+  const txn = { id: "mock-transaction-abc", stamp: "gold tucan" };
+  console.log(`[MOCK] Transaction created:`, txn);
+  return txn;
 }
 
 export async function sendPayout(_transactionId: string, levelsCleared: number): Promise<void> {

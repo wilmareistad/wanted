@@ -73,7 +73,7 @@ const cols = currentLevel.carousel
         </div>
 
         <div className={styles.timerRow}>
-          <Timer key={timerKey} ref={timerRef} initialTime={300} onTimeUp={onTimeUp} />
+          <Timer key={timerKey} ref={timerRef} initialTime={10} onTimeUp={onTimeUp} />
         </div>
 
         <div className={styles.messageBox}>
@@ -96,6 +96,8 @@ const cols = currentLevel.carousel
           onCharacterClick={stableClick}
           speed={currentLevel.carouselSpeed ?? 60}
           gap={currentLevel.carouselGap ?? 20}
+          shakiness={currentLevel.carouselShakiness ?? 0}
+          sameDirection={currentLevel.carouselSameDirection ?? false}
           />
         ) : (
           <div className={`${styles.grid} ${styles[`grid${cols}`]}`}>
