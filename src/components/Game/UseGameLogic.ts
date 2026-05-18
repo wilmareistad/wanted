@@ -57,7 +57,8 @@ export function useGameLogic() {
         await loadLevel(nextIndex);
       }
     } else {
-      setMessage("Wrong...");
+      setMessage("Wrong!");
+      setTimeout(() => setMessage(""), 3000);
     }
   }
 
