@@ -41,7 +41,9 @@ export function GameOver({
           </div>
 
           <div className={styles.rewardBox}>
-            <div>€{euro} | Stamp: {transaction?.stamp}</div>
+            <div>
+              €{euro} | Stamp: {transaction?.stamp?.stamptype}
+            </div>
           </div>
         </div>
 

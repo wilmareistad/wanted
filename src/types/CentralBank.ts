@@ -3,9 +3,19 @@ export type CentralbankUser = {
   name: string;
 };
 
+export type Stamp = {
+  id: string;
+  user_id: string;
+  stamptype_id: string;
+  image_url: string;
+  stamptype: string;
+  created_at: string;
+  updated_at: string;
+};
+
 export type Transaction = {
   id: string;
-  stamp: string;
+  stamp: Stamp;
 };
 
 export type CentralbankError =
