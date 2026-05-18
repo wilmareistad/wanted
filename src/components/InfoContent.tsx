@@ -23,30 +23,27 @@ export default function InfoContent() {
           </li>
           <li>Find that rune among the characters</li>
           <li>Click or tap the correct rune to catch them</li>
-          <li>Each correct catch adds 5 seconds to your time</li>
+          <li>Each correct catch adds 2 seconds to your time</li>
           <li>Progress through all the levels to complete the game</li>
+          <li>Complete more levels to earn bigger rewards!</li>
         </ul>
       </div>
 
       <div className={styles.sideRow}>
         <div className={styles.section}>
           <h3>Controls:</h3>
-          <h4>Other options</h4>
           <ul>
             <li>
-              <kbd>Mouse</kbd> - Use mouse or mousepad to move cursor,
+              <kbd>Mouse / Trackpad</kbd> - Move cursor and click
             </li>
             <li>
-              <kbd>Rightclick</kbd> to tap target
+              <kbd>Arrow Keys</kbd> - Move cursor on screen (keyboard mode)
             </li>
             <li>
-              <kbd>Tab</kbd> - Navigate between characters
+              <kbd>Enter</kbd> or <kbd>Space</kbd> - Select character under cursor (keyboard mode)
             </li>
             <li>
-              <kbd>Enter</kbd> or <kbd>Space</kbd> - Select character
-            </li>
-            <li>
-              <kbd>Arrow Keys</kbd> - Move in carousel mode
+              <kbd>Esc</kbd> - Close this dialog
             </li>
           </ul>
         </div>
