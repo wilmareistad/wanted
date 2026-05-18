@@ -28,8 +28,10 @@ export function useCentralbank() {
 
   async function startGame() {
     try {
-      const token = identityToken || "mock-token";
-      const txn = await createTransaction(token);
+      if (!identityToken) {
+        throw { type: "NETWORK_ERROR", message: "No identity token provided" };
+      }
+      const txn = await createTransaction(identityToken);
       setTransaction(txn);
       return txn.stamp;
     } catch (e) {
