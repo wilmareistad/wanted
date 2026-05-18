@@ -25,6 +25,7 @@ export function GameOn({
   const roRef = useRef<ResizeObserver | null>(null);
   const [rowCount, setRowCount] = useState(5);
   const [cursorPos, setCursorPos] = useState({ x: 0, y: 0 });
+  const [cursorVisible, setCursorVisible] = useState(false);
   const cursorRef = useRef({ x: 0, y: 0 });
 
   useEffect(() => {
@@ -63,11 +64,13 @@ export function GameOn({
       switch (e.key) {
         case "ArrowUp":
           e.preventDefault();
+          setCursorVisible(true);
           cursorRef.current.y = Math.max(0, cursorRef.current.y - CURSOR_SPEED);
           moved = true;
           break;
         case "ArrowDown":
           e.preventDefault();
+          setCursorVisible(true);
           cursorRef.current.y = Math.min(
             window.innerHeight - 10,
             cursorRef.current.y + CURSOR_SPEED
@@ -76,11 +79,13 @@ export function GameOn({
           break;
         case "ArrowLeft":
           e.preventDefault();
+          setCursorVisible(true);
           cursorRef.current.x = Math.max(0, cursorRef.current.x - CURSOR_SPEED);
           moved = true;
           break;
         case "ArrowRight":
           e.preventDefault();
+          setCursorVisible(true);
           cursorRef.current.x = Math.min(
             window.innerWidth - 10,
             cursorRef.current.x + CURSOR_SPEED
@@ -238,6 +243,8 @@ export function GameOn({
           style={{
             left: `${cursorPos.x}px`,
             top: `${cursorPos.y}px`,
+            opacity: cursorVisible ? 1 : 0,
+            transition: 'opacity 0.2s ease',
           }}
         />
       </div>
