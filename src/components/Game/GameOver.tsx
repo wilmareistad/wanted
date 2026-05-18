@@ -1,5 +1,4 @@
 import { useState } from "react";
-import type { ReactNode } from "react";
 import type { GameOverProps } from "../../types/Game";
 import styles from "./GameOver.module.css";
 import { Leaderboard } from "../Leaderboard";
@@ -12,7 +11,7 @@ export function GameOver({
   currentLevel,
   onPlayAgain,
   transaction,
-}: GameOverProps): ReactNode {
+}: GameOverProps) {
   const [infoMode, setInfoMode] = useState<null | "play" | "info">(null);
 
   const openInfoForPlay = () => setInfoMode("play");

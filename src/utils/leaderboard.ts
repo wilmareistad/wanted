@@ -24,9 +24,13 @@ export async function getTopFive(): Promise<LeaderboardEntry[]> {
 }
 
 export async function saveScore(name: string, score: number): Promise<void> {
-  await fetch(`${SUPABASE_URL}/rest/v1/leaderboard`, {
+  const res = await fetch(`${SUPABASE_URL}/rest/v1/leaderboard`, {
     method: "POST",
     headers,
     body: JSON.stringify({ name, score }),
   });
+  // Just check if successful, don't return the response data
+  if (!res.ok) {
+    throw new Error(`Failed to save score: ${res.statusText}`);
+  }
 }
