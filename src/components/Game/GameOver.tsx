@@ -1,8 +1,10 @@
+import { useState } from "react";
 import type { ReactNode } from "react";
 import type { GameOverProps } from "../../types/Game";
 import styles from "./GameOver.module.css";
 import { Leaderboard } from "../Leaderboard";
 import { Navigation } from "./Navigation";
+import Info from "../Info";
 import { calculatePayout } from "../../utils/gameUtils";
 
 export function GameOver({
@@ -11,6 +13,14 @@ export function GameOver({
   onPlayAgain,
   transaction,
 }: GameOverProps): ReactNode {
+  const [infoMode, setInfoMode] = useState<null | "play" | "info">(null);
+
+  const openInfoForPlay = () => setInfoMode("play");
+  const openInfo = () => setInfoMode("info");
+  const handleStartFromInfo = () => {
+    setInfoMode(null);
+    onPlayAgain();
+  };
   const euro = calculatePayout(currentLevel.level);
 
   return (
@@ -39,7 +49,14 @@ export function GameOver({
         <Leaderboard />
       </section>
 
-      <Navigation onStartGame={onPlayAgain} />
+      <Navigation onStartGame={openInfoForPlay} onInfoClick={openInfo} />
+
+      <Info
+        isOpen={infoMode !== null}
+        onClose={() => setInfoMode(null)}
+        onStartGame={handleStartFromInfo}
+        showStartButton={infoMode === "play"}
+      />
     </div>
   );
 }
