@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import styles from "./Info.module.css";
-
+import DownArrow from "../assets/DownArrow.png";
 import InfoContent from "./InfoContent";
 
 interface InfoModalProps {
@@ -92,7 +92,7 @@ export default function Info({
             <>
               <div className={styles.scrollFade} aria-hidden="true" />
               <div className={styles.scrollBubble} aria-hidden="true">
-                <span aria-hidden="true">\/</span>
+                <img src={DownArrow} alt="" aria-hidden="true" />
               </div>
             </>
           )}
