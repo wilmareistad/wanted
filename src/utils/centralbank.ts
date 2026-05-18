@@ -1,6 +1,5 @@
 import { calculatePayout } from "./gameUtils";
-import type { CentralbankUser } from "../types/CentralBank"
-import type { Transaction } from "../types/CentralBank"
+import type { CentralbankUser, Transaction } from "../types/CentralBank";
 
 const BASE_URL = import.meta.env.VITE_CENTRALBANK_URL;
 const API_KEY = import.meta.env.VITE_CENTRALBANK_API_KEY;
