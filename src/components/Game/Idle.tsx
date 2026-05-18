@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import type { ReactNode } from "react";
 import type { IdleProps } from "../../types/Game";
 import styles from "./Idle.module.css";
@@ -8,16 +8,14 @@ import Instructions from "../Instructions";
 import Info from "../Info";
 
 export function Idle({ onStartGame }: IdleProps): ReactNode {
-  const [isInfoOpen, setIsInfoOpen] = useState(false);
+  const [infoMode, setInfoMode] = useState<null | "play" | "info">(null);
 
-  useEffect(() => {
-    // Check if user has seen the info modal before
-    const hasSeenInfo = localStorage.getItem("hasSeenInfoModal");
-    if (!hasSeenInfo) {
-      setIsInfoOpen(true);
-      localStorage.setItem("hasSeenInfoModal", "true");
-    }
-  }, []);
+  const openInfoForPlay = () => setInfoMode("play");
+  const openInfo = () => setInfoMode("info");
+  const handleStartFromInfo = () => {
+    setInfoMode(null);
+    onStartGame();
+  };
 
   return (
     <>
@@ -32,13 +30,15 @@ export function Idle({ onStartGame }: IdleProps): ReactNode {
           <Leaderboard />
         </section>
 
-        <Navigation
-          onStartGame={onStartGame}
-          onInfoClick={() => setIsInfoOpen(true)}
-        />
+        <Navigation onStartGame={openInfoForPlay} onInfoClick={openInfo} />
       </div>
 
-      <Info isOpen={isInfoOpen} onClose={() => setIsInfoOpen(false)} />
+      <Info
+        isOpen={infoMode !== null}
+        onClose={() => setInfoMode(null)}
+        onStartGame={handleStartFromInfo}
+        showStartButton={infoMode === "play"}
+      />
     </>
   );
 }

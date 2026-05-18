@@ -1,79 +1,172 @@
+import { useEffect, useRef, useState } from "react";
 import styles from "./Info.module.css";
+import DownArrow from "../assets/DownArrow.png";
+import InfoContent from "./InfoContent";
 
 interface InfoModalProps {
   isOpen: boolean;
   onClose: () => void;
+  onStartGame?: () => void;
+  showStartButton?: boolean;
 }
 
-export default function Info({ isOpen, onClose }: InfoModalProps) {
+export default function Info({
+  isOpen,
+  onClose,
+  onStartGame,
+  showStartButton = true,
+}: InfoModalProps) {
+  const scrollRef = useRef<HTMLDivElement | null>(null);
+  const modalRef = useRef<HTMLDivElement | null>(null);
+  const [hasScrolledToBottom, setHasScrolledToBottom] = useState(false);
+  const [hasEverScrolledToBottom, setHasEverScrolledToBottom] = useState(false);
+
+  const handleStart = () => {
+    if (onStartGame) onStartGame();
+    onClose();
+  };
+
+  const checkScrollPosition = () => {
+    const element = scrollRef.current;
+    if (!element) return;
+
+    const isAtBottom =
+      element.scrollTop + element.clientHeight >= element.scrollHeight - 8;
+    const atBottom = isAtBottom || element.scrollHeight <= element.clientHeight;
+    setHasScrolledToBottom(atBottom);
+    if (atBottom) setHasEverScrolledToBottom(true);
+  };
+
+  // Handle ESC key to close modal
+  useEffect(() => {
+    if (!isOpen) return;
+
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        onClose();
+      }
+      
+      // Fokus trap - keep focus in the modal
+      if (event.key === "Tab" && modalRef.current) {
+        const focusableElements = modalRef.current.querySelectorAll(
+          'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+        );
+        const focusableArray = Array.from(focusableElements) as HTMLElement[];
+        
+        if (focusableArray.length === 0) return;
+        
+        const firstElement = focusableArray[0];
+        const lastElement = focusableArray[focusableArray.length - 1];
+        const activeElement = document.activeElement;
+        
+        if (event.shiftKey) {
+          // Shift + Tab (back)
+          if (activeElement === firstElement) {
+            event.preventDefault();
+            lastElement.focus();
+          }
+        } else {
+          // Tab (forward)
+          if (activeElement === lastElement) {
+            event.preventDefault();
+            firstElement.focus();
+          }
+        }
+      }
+    };
+
+    document.addEventListener("keydown", handleKeyDown);
+    return () => document.removeEventListener("keydown", handleKeyDown);
+  }, [isOpen, onClose]);
+
+  useEffect(() => {
+    if (!isOpen) return;
+
+    const element = scrollRef.current;
+    if (!element) return;
+
+    checkScrollPosition();
+
+    const resizeObserver = new ResizeObserver(() => {
+      checkScrollPosition();
+    });
+
+    resizeObserver.observe(element);
+
+    return () => {
+      resizeObserver.disconnect();
+    };
+  }, [isOpen]);
+
+  useEffect(() => {
+    if (!isOpen) {
+      setHasScrolledToBottom(false);
+      setHasEverScrolledToBottom(false);
+    } else {
+      // Focus on teh first focusable element
+      if (modalRef.current) {
+        const focusableElements = modalRef.current.querySelectorAll(
+          'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+        );
+        const firstElement = focusableElements[0] as HTMLElement;
+        if (firstElement) {
+          setTimeout(() => firstElement.focus(), 0);
+        }
+      }
+    }
+  }, [isOpen]);
+
   if (!isOpen) return null;
 
   return (
     <>
-      <div className={styles.overlay} onClick={onClose} />
-      <div className={styles.modal}>
+      <div className={styles.overlay} onClick={onClose} role="presentation" />
+      <div ref={modalRef} className={styles.modal} role="dialog" aria-modal="true" aria-labelledby="modal-title">
         <div className={styles.header}>
-          <h3>Game Info</h3>
+          <h3 id="modal-title">Game Info</h3>
           <button
             className={styles.closeBtn}
             onClick={onClose}
-            aria-label="Close modal"
+            aria-label="Back"
           >
-            ×
+            Back
           </button>
         </div>
 
-        <div className={styles.scrollContent}>
-
-          <div className={styles.caution}>
-            <h2>CAUTION</h2>
-            <h3>Game contains flashing images and fast animations, play with caution.</h3>
+        <div className={styles.scrollArea}>
+          <div
+            ref={scrollRef}
+            className={styles.scrollContent}
+            onScroll={checkScrollPosition}
+          >
+            <InfoContent />
           </div>
 
-
-            <h4 className={styles.tagline}>Find the wanted Rune before time runs out!</h4>
-
-
-          <div className={styles.section}>
-            <h3>How to play:</h3>
-            <ul>
-              <li>Each round shows a <strong>WANTED</strong> Rune</li>
-              <li>Find that rune among the characters</li>
-              <li>Click or tap the correct rune to catch them</li>
-              <li>Each correct catch adds 5 seconds to your time</li>
-              <li>Progress through all the levels to complete the game</li>
-            </ul>
-          </div>
-
-          <div className={styles.sideRow}>
-            <div className={styles.section}>
-              <h3>Keyboard shortcuts:</h3>
-              <ul>
-                <li><kbd>Tab</kbd> - Navigate between characters</li>
-                <li><kbd>Enter</kbd> or <kbd>Space</kbd> - Select character</li>
-                <li><kbd>Arrow Keys</kbd> - Move in carousel mode</li>
-              </ul>
-            </div>
-
-            <div className={styles.section}>
-              <h3>Rewards:</h3>
-              <ul>
-                <li>1+ level: €0.50</li>
-                <li>4+ levels: €1.00</li>
-                <li>7+ levels: €1.50</li>
-                <li>10+ levels: €1.80</li>
-                <li>13+ levels: €2.00</li>
-                <li>15+ levels: €3.00</li>
-              </ul>
-            </div>
-          </div>
-
+          {!hasScrolledToBottom && (
+            <>
+              <div className={styles.scrollFade} aria-hidden="true" />
+              <div className={styles.scrollBubble} aria-hidden="true">
+                <img src={DownArrow} alt="" aria-hidden="true" />
+              </div>
+            </>
+          )}
         </div>
 
         <div className={styles.footer}>
-          <button className={styles.closeButtonBottom} onClick={onClose}>
-            Got it!
-          </button>
+          {showStartButton ? (
+            <button
+              className={styles.closeButtonBottom}
+              onClick={handleStart}
+              disabled={!hasEverScrolledToBottom}
+              aria-disabled={!hasEverScrolledToBottom}
+            >
+              Ready? - Start game 2€
+            </button>
+          ) : (
+            <button className={styles.closeButtonBottom} onClick={onClose}>
+              Got it
+            </button>
+          )}
         </div>
       </div>
     </>

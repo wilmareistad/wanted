@@ -70,6 +70,7 @@ function CarouselRow({
   const offsetRef = useRef(0);
   const lastTsRef = useRef<number | null>(null);
   const rafRef = useRef(0);
+  const buttonRefs = useRef<(HTMLButtonElement | null)[]>([]);
 
   const slotW = ITEM_W + gap;
   const oneSetW = items.length * slotW;
@@ -80,6 +81,22 @@ function CarouselRow({
     { length: copiesNeeded * items.length },
     (_, i) => items[i % items.length]
   );
+
+  // Handle keyboard navigation
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLButtonElement>, index: number) => {
+    if (e.key === "ArrowLeft") {
+      e.preventDefault();
+      const prevIndex = (index - 1 + items.length) % items.length;
+      buttonRefs.current[prevIndex]?.focus();
+    } else if (e.key === "ArrowRight") {
+      e.preventDefault();
+      const nextIndex = (index + 1) % items.length;
+      buttonRefs.current[nextIndex]?.focus();
+    } else if (e.key === "Enter" || e.key === " ") {
+      e.preventDefault();
+      onCharacterClick(items[index % items.length]);
+    }
+  };
 
   useEffect(() => {
     // Left moves negative, right starts at -oneSetW and moves positive back toward 0
@@ -127,9 +144,14 @@ function CarouselRow({
         {repeated.map((char, i) => (
           <div key={i} className={styles.slot} style={{ width: slotW }}>
             <button
+              ref={(el) => {
+                buttonRefs.current[i % items.length] = el;
+              }}
               className={styles.item}
               style={{ width: ITEM_W, height: ITEM_H }}
               onClick={() => onCharacterClick(items[i % items.length])}
+              onKeyDown={(e) => handleKeyDown(e, i)}
+              aria-label={`Character ${i % items.length + 1}`}
             >
               {isImage(char.figure) ? (
                 <img src={char.figure} alt="character" className={styles.img} />
