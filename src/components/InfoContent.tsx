@@ -31,6 +31,7 @@ export default function InfoContent() {
       <div className={styles.sideRow}>
         <div className={styles.section}>
           <h3>Controls:</h3>
+          <h4>Other options</h4>
           <ul>
             <li>
               <kbd>Mouse</kbd> - Use mouse or mousepad to move cursor,
@@ -38,7 +39,6 @@ export default function InfoContent() {
             <li>
               <kbd>Rightclick</kbd> to tap target
             </li>
-            <h3>Other options</h3>
             <li>
               <kbd>Tab</kbd> - Navigate between characters
             </li>
