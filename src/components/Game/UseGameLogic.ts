@@ -7,6 +7,7 @@ import {
   resolveFigure,
   type GridCharacter,
 } from "../../utils/gameUtils";
+import { saveScore } from "../../utils/leaderboard";
 import { useCentralbank } from "../../hooks/useCentralbank";
 
 export function useGameLogic() {
@@ -27,6 +28,7 @@ export function useGameLogic() {
     endGame,
     transaction,
     error,
+    user,
   } = useCentralbank();
 
   const currentLevel = LEVELS[levelIndex];
@@ -65,6 +67,10 @@ export function useGameLogic() {
       const nextIndex = levelIndex + 1;
       if (nextIndex >= LEVELS.length) {
         await endGame(currentLevel.level);
+        // Save score to leaderboard if user has a name
+        if (user?.name) {
+          await saveScore(user.name, score);
+        }
         setGameState("gameover");
       } else {
         setLevelIndex(nextIndex);
