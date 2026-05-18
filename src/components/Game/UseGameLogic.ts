@@ -47,15 +47,27 @@ export function useGameLogic() {
     setLevelIndex(0);
     setMessage("");
     setTimerKey((k) => k + 1);
+
+    try {
+      await startCentralbankGame();
+    } catch {
+      return;
+    }
+
     setGameState("playing");
-    await startCentralbankGame();
     await loadLevel(0);
   }
 
   async function handleClick(character: GridCharacter) {
     if (gameState !== "playing" || !sessionId || loading) return;
 
-    const correct = await validateClick(sessionId, character.id);
+    let correct: boolean;
+    try {
+      correct = await validateClick(sessionId, character.id);
+    } catch {
+      setMessage("Connection error, try clicking again.");
+      return;
+    }
 
     if (correct) {
       setScore((prev) => prev + 1);

@@ -73,7 +73,7 @@ const cols = currentLevel.carousel
         </div>
 
         <div className={styles.timerRow}>
-          <Timer key={timerKey} ref={timerRef} initialTime={10} onTimeUp={onTimeUp} />
+          <Timer key={timerKey} ref={timerRef} initialTime={100} onTimeUp={onTimeUp} />
         </div>
 
         <div className={styles.messageBox}>

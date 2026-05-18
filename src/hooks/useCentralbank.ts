@@ -1,8 +1,15 @@
 import { useState, useEffect } from "react";
 // change from centralbank.mock to centralbank when centralbank is done
-import { getIdentity, createTransaction, sendPayout } from "../utils/centralbank.mock";
-import type { CentralbankUser, Transaction, CentralbankError } from "../types/CentralBank";
-
+import {
+  getIdentity,
+  createTransaction,
+  sendPayout,
+} from "../utils/centralbank.mock";
+import type {
+  CentralbankUser,
+  Transaction,
+  CentralbankError,
+} from "../types/CentralBank";
 
 export function useCentralbank() {
   const [user, setUser] = useState<CentralbankUser | null>(null);
@@ -19,7 +26,7 @@ export function useCentralbank() {
       setIdentityToken(token);
       getIdentity(token)
         .then(setUser)
-        .catch(setError);
+        .catch((e) => setError(e as CentralbankError));
     }
   }, []);
 

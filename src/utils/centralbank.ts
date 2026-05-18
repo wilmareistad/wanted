@@ -12,7 +12,7 @@ const headers = {
 export async function getIdentity(token: string): Promise<CentralbankUser> {
   const res = await fetch(`${BASE_URL}/identity-tokens/${token}`, { headers });
   if (res.status === 401) throw { type: "TOKEN_EXPIRED" };
-  if (!res.ok) throw { type: "NETWORK_ERROR", message: "Could not verify identity" };
+  if (!res.ok) throw { type: "ERROR", message: "Could not verify identity" };
   const data = await res.json();
   return data.user;
 }
