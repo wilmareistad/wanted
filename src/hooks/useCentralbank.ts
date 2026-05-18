@@ -16,9 +16,13 @@ export function useCentralbank() {
 
     if (token) {
       setIdentityToken(token);
+      // getIdentity is optional - try to fetch it but don't block if it fails
       getIdentity(token)
         .then(setUser)
-        .catch(setError);
+        .catch(() => {
+          // Silently ignore getIdentity failures - it's optional
+          console.debug("getIdentity failed (optional endpoint)");
+        });
     }
   }, []);
 
