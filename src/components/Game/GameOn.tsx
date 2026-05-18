@@ -3,6 +3,7 @@ import Timer from "../Timer";
 import CarouselGrid from "../CarouselGrid";
 import Instructions from "../Instructions";
 import { Leaderboard } from "../Leaderboard";
+import { VirtualCursor } from "../VirtualCursor";
 import { isImage } from "../../utils/gameUtils";
 import styles from "./GameOn.module.css";
 import type { GameOnProps } from "../../types/Game";
@@ -36,7 +37,7 @@ export function GameOn({
     return () => roRef.current?.disconnect();
   }, []);
 
-const cols = currentLevel.carousel
+  const cols = currentLevel.carousel
   ? currentLevel.carouselCols ?? Math.ceil(characters.length / rowCount)
   : Math.round(Math.sqrt(currentLevel.gridCount));
   const stableClickRef = useRef(onCharacterClick);
@@ -101,11 +102,14 @@ const cols = currentLevel.carousel
           />
         ) : (
           <div className={`${styles.grid} ${styles[`grid${cols}`]}`}>
-            {characters.map((c) => (
+            {characters.map((c, index) => (
               <button
               key={c.id}
+              data-index={index}
               onClick={() => onCharacterClick(c)}
               className={styles.characterButton}
+              aria-label={`Character ${index + 1}`}
+              tabIndex={-1}
               >
                 {isImage(c.figure) ? (
                   <img src={c.figure} alt="figure" className={styles.characterImg} />
@@ -116,6 +120,7 @@ const cols = currentLevel.carousel
             ))}
           </div>
         )}
+        <VirtualCursor />
       </div>
 <div className={styles.sideInfo}>
 
