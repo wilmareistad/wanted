@@ -1,6 +1,5 @@
 import { useState, useEffect } from "react";
-// change from centralbank.mock to centralbank when centralbank is done
-import { getIdentity, createTransaction, sendPayout } from "../utils/centralbank.mock";
+import { getIdentity, createTransaction, sendPayout } from "../utils/centralbank";
 import type { CentralbankUser, Transaction, CentralbankError } from "../types/CentralBank";
 
 
