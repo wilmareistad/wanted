@@ -24,6 +24,8 @@ export function GameOn({
   const playfieldRef = useRef<HTMLDivElement>(null);
   const roRef = useRef<ResizeObserver | null>(null);
   const [rowCount, setRowCount] = useState(5);
+  const [cursorPos, setCursorPos] = useState({ x: 0, y: 0 });
+  const cursorRef = useRef({ x: 0, y: 0 });
 
   useEffect(() => {
     const node = playfieldRef.current;
@@ -36,21 +38,101 @@ export function GameOn({
     return () => roRef.current?.disconnect();
   }, []);
 
-  // Auto-focus first button when game starts or changes
   useEffect(() => {
     if (loading) return;
     
-    const timer = setTimeout(() => {
-      const firstButton = playfieldRef.current?.querySelector(
-        "button"
-      ) as HTMLButtonElement;
-      if (firstButton) {
-        firstButton.focus();
-      }
-    }, 0);
-
-    return () => clearTimeout(timer);
   }, [loading, characters]);
+
+  // Initialize cursor position to center of playfield
+  useEffect(() => {
+    if (!loading && playfieldRef.current) {
+      const rect = playfieldRef.current.getBoundingClientRect();
+      const centerX = rect.left + rect.width / 2;
+      const centerY = rect.top + rect.height / 2;
+      cursorRef.current = { x: centerX, y: centerY };
+      setCursorPos({ x: centerX, y: centerY });
+    }
+  }, [loading]);
+
+  // Virtual cursor movement with arrow keys
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      const CURSOR_SPEED = 30;
+      let moved = false;
+
+      switch (e.key) {
+        case "ArrowUp":
+          e.preventDefault();
+          cursorRef.current.y = Math.max(0, cursorRef.current.y - CURSOR_SPEED);
+          moved = true;
+          break;
+        case "ArrowDown":
+          e.preventDefault();
+          cursorRef.current.y = Math.min(
+            window.innerHeight - 10,
+            cursorRef.current.y + CURSOR_SPEED
+          );
+          moved = true;
+          break;
+        case "ArrowLeft":
+          e.preventDefault();
+          cursorRef.current.x = Math.max(0, cursorRef.current.x - CURSOR_SPEED);
+          moved = true;
+          break;
+        case "ArrowRight":
+          e.preventDefault();
+          cursorRef.current.x = Math.min(
+            window.innerWidth - 10,
+            cursorRef.current.x + CURSOR_SPEED
+          );
+          moved = true;
+          break;
+        case "Enter":
+        case " ":
+          e.preventDefault();
+          // Temporarily hide cursor to find element underneath
+          const cursorElement = document.querySelector(`.${styles.virtualCursor}`) as HTMLElement;
+          if (cursorElement) {
+            cursorElement.style.display = 'none';
+          }
+          
+          const element = document.elementFromPoint(
+            cursorRef.current.x,
+            cursorRef.current.y
+          ) as HTMLElement;
+          
+          // Show cursor again
+          if (cursorElement) {
+            cursorElement.style.display = 'block';
+          }
+          
+          // Click the button or its parent if it's an image inside a button
+          let targetButton: HTMLButtonElement | null = null;
+          if (element && element.tagName === "BUTTON") {
+            targetButton = element as HTMLButtonElement;
+          } else if (element && element.closest("button")) {
+            targetButton = element.closest("button") as HTMLButtonElement;
+          }
+          
+          if (targetButton) {
+            targetButton.click();
+          }
+          return;
+        case "Tab":
+          e.preventDefault();
+          return;
+        default:
+          return;
+      }
+
+      if (moved) {
+        setCursorPos({ ...cursorRef.current });
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, []);
 
   const cols = currentLevel.carousel
   ? currentLevel.carouselCols ?? Math.ceil(characters.length / rowCount)
@@ -64,25 +146,8 @@ export function GameOn({
 
   // Keyboard navigation for grid
   const handleGridKeyDown = (e: React.KeyboardEvent<HTMLButtonElement>, index: number) => {
-    let nextIndex = index;
-
+    // Only handle Enter/Space for clicking
     switch (e.key) {
-      case "ArrowUp":
-        e.preventDefault();
-        nextIndex = Math.max(0, index - cols);
-        break;
-      case "ArrowDown":
-        e.preventDefault();
-        nextIndex = Math.min(characters.length - 1, index + cols);
-        break;
-      case "ArrowLeft":
-        e.preventDefault();
-        nextIndex = index === 0 ? characters.length - 1 : index - 1;
-        break;
-      case "ArrowRight":
-        e.preventDefault();
-        nextIndex = index === characters.length - 1 ? 0 : index + 1;
-        break;
       case "Enter":
       case " ":
         e.preventDefault();
@@ -90,13 +155,6 @@ export function GameOn({
         return;
       default:
         return;
-    }
-
-    const button = playfieldRef.current?.querySelector(
-      `button[data-index="${nextIndex}"]`
-    ) as HTMLButtonElement;
-    if (button) {
-      button.focus();
     }
   };
 
@@ -163,7 +221,7 @@ export function GameOn({
               onKeyDown={(e) => handleGridKeyDown(e, index)}
               className={styles.characterButton}
               aria-label={`Character ${index + 1}`}
-              tabIndex={0}
+              tabIndex={-1}
               >
                 {isImage(c.figure) ? (
                   <img src={c.figure} alt="figure" className={styles.characterImg} />
@@ -174,6 +232,14 @@ export function GameOn({
             ))}
           </div>
         )}
+        {/* Virtual cursor */}
+        <div
+          className={styles.virtualCursor}
+          style={{
+            left: `${cursorPos.x}px`,
+            top: `${cursorPos.y}px`,
+          }}
+        />
       </div>
 <div className={styles.sideInfo}>
 

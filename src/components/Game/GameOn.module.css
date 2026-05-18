@@ -101,6 +101,7 @@
   flex-direction: column;
   justify-content: center;
   background-color: black;
+  position: relative;
 }
 
 @media (min-width: 401px) {
@@ -139,11 +140,6 @@
   transition: all 0.2s ease;
 }
 
-.characterButton:focus-visible {
-  outline: 3px solid var(--focusColor);
-  outline-offset: 1px;
-}
-
 .characterImg {
   width: 100%;
   height: 100%;
@@ -164,8 +160,21 @@
 }
 
 @media (min-width: 1000px) {
-.sideInfo {
+  .sideInfo {
     display: flex;
     width: 25vw;
   }
+}
+
+.virtualCursor {
+  position: fixed;
+  width: 12px;
+  height: 12px;
+  background-color: var(--focusColor);
+  border: 2px solid white;
+  border-radius: 50%;
+  pointer-events: none;
+  transform: translate(-50%, -50%);
+  z-index: 1000;
+  box-shadow: 0 0 8px rgba(255, 215, 0, 0.6);
 }
