@@ -5,10 +5,9 @@ export type CentralbankUser = {
 
 export type Stamp = {
   id: string;
-  user_id: string;
-  stamptype_id: string;
+  animal: string;
+  metal: string;
   image_url: string;
-  stamptype: string;
   created_at: string;
   updated_at: string;
 };
