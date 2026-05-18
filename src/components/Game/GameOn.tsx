@@ -101,11 +101,13 @@ const cols = currentLevel.carousel
           />
         ) : (
           <div className={`${styles.grid} ${styles[`grid${cols}`]}`}>
-            {characters.map((c) => (
+            {characters.map((c, index) => (
               <button
               key={c.id}
               onClick={() => onCharacterClick(c)}
               className={styles.characterButton}
+              aria-label={`Character ${index + 1}`}
+              tabIndex={0}
               >
                 {isImage(c.figure) ? (
                   <img src={c.figure} alt="figure" className={styles.characterImg} />

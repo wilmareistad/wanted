@@ -2,7 +2,8 @@
   --headerFont: "Jersey 10", sans-serif;
   --textLight: #ffffff;
   --boxBackground: #D9D9D9;
-  --yrgoRed: #e51336
+  --yrgoRed: #e51336;
+  --focusColor: #FFD700;
 }
 
 body {
@@ -59,4 +60,14 @@ button {
   margin: 1rem;
   padding: 0rem 1rem;
   letter-spacing: 3px;
+  transition: all 0.2s ease;
+}
+
+button:focus-visible {
+  outline: 4px solid var(--focusColor);
+  outline-offset: 2px;
+}
+
+button:active {
+  transform: scale(0.98);
 }
