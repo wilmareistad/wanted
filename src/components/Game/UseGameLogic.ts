@@ -69,7 +69,11 @@ export function useGameLogic() {
         await endGame(currentLevel.level);
         // Save score to leaderboard if user has a name
         if (user?.name) {
-          await saveScore(user.name, score);
+          try {
+            await saveScore(user.name, score);
+          } catch (err) {
+            console.error("Failed to save score:", err);
+          }
         }
         setGameState("gameover");
       } else {
