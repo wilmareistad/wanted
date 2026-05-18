@@ -36,7 +36,23 @@ export function GameOn({
     return () => roRef.current?.disconnect();
   }, []);
 
-const cols = currentLevel.carousel
+  // Auto-focus first button when game starts or changes
+  useEffect(() => {
+    if (loading) return;
+    
+    const timer = setTimeout(() => {
+      const firstButton = playfieldRef.current?.querySelector(
+        "button"
+      ) as HTMLButtonElement;
+      if (firstButton) {
+        firstButton.focus();
+      }
+    }, 0);
+
+    return () => clearTimeout(timer);
+  }, [loading, characters]);
+
+  const cols = currentLevel.carousel
   ? currentLevel.carouselCols ?? Math.ceil(characters.length / rowCount)
   : Math.round(Math.sqrt(currentLevel.gridCount));
   const stableClickRef = useRef(onCharacterClick);
@@ -45,6 +61,44 @@ const cols = currentLevel.carousel
     (c: Parameters<typeof onCharacterClick>[0]) => stableClickRef.current(c),
     []
   );
+
+  // Keyboard navigation for grid
+  const handleGridKeyDown = (e: React.KeyboardEvent<HTMLButtonElement>, index: number) => {
+    let nextIndex = index;
+
+    switch (e.key) {
+      case "ArrowUp":
+        e.preventDefault();
+        nextIndex = Math.max(0, index - cols);
+        break;
+      case "ArrowDown":
+        e.preventDefault();
+        nextIndex = Math.min(characters.length - 1, index + cols);
+        break;
+      case "ArrowLeft":
+        e.preventDefault();
+        nextIndex = index === 0 ? characters.length - 1 : index - 1;
+        break;
+      case "ArrowRight":
+        e.preventDefault();
+        nextIndex = index === characters.length - 1 ? 0 : index + 1;
+        break;
+      case "Enter":
+      case " ":
+        e.preventDefault();
+        onCharacterClick(characters[index]);
+        return;
+      default:
+        return;
+    }
+
+    const button = playfieldRef.current?.querySelector(
+      `button[data-index="${nextIndex}"]`
+    ) as HTMLButtonElement;
+    if (button) {
+      button.focus();
+    }
+  };
 
   return (
 
@@ -104,7 +158,9 @@ const cols = currentLevel.carousel
             {characters.map((c, index) => (
               <button
               key={c.id}
+              data-index={index}
               onClick={() => onCharacterClick(c)}
+              onKeyDown={(e) => handleGridKeyDown(e, index)}
               className={styles.characterButton}
               aria-label={`Character ${index + 1}`}
               tabIndex={0}
