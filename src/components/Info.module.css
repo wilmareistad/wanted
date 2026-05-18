@@ -78,6 +78,16 @@
 
 .closeBtn:hover {
   box-shadow: inset 0 0 6px 4px rgba(0, 0, 0, 0.35);
+  transform: scale(1.05);
+}
+
+.closeBtn:focus-visible {
+  outline: 3px solid var(--focusColor);
+  outline-offset: 2px;
+}
+
+.closeBtn:active {
+  transform: scale(0.98);
 }
 
 .scrollArea {
@@ -274,6 +284,11 @@
   transition: all 0.2s ease;
   -webkit-text-stroke: 3px black;
   paint-order: stroke fill;
+}
+
+.closeButtonBottom:focus-visible {
+  outline: 3px solid var(--focusColor);
+  outline-offset: 2px;
 }
 
 .closeButtonBottom:disabled {

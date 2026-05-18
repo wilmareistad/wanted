@@ -21,17 +21,45 @@
 .playBtn {
   background-color: #7ED267;
   padding: 0 2rem;
+  transition: all 0.2s ease;
+}
+
+.playBtn:focus-visible {
+  outline: 4px solid var(--focusColor);
+  outline-offset: 2px;
+}
+
+.playBtn:hover {
+  transform: scale(1.05);
 }
 
 .rewardBtn {
   background-color: var(--yrgoRed);
   color: #FFEE00;
-  /* min-width: 170px; */
+  transition: all 0.2s ease;
+}
+
+.rewardBtn:focus-visible {
+  outline: 4px solid var(--focusColor);
+  outline-offset: 2px;
+}
+
+.rewardBtn:hover {
+  transform: scale(1.05);
 }
 
 .tivoliBtn {
   background-color: #7FB0C7;
-  /* min-width: 170px; */
+  transition: all 0.2s ease;
+}
+
+.tivoliBtn:focus-visible {
+  outline: 4px solid var(--focusColor);
+  outline-offset: 2px;
+}
+
+.tivoliBtn:hover {
+  transform: scale(1.05);
 }
 
 .infoButtons {

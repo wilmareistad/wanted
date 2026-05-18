@@ -17,6 +17,7 @@ export default function Info({
   showStartButton = true,
 }: InfoModalProps) {
   const scrollRef = useRef<HTMLDivElement | null>(null);
+  const modalRef = useRef<HTMLDivElement | null>(null);
   const [hasScrolledToBottom, setHasScrolledToBottom] = useState(false);
   const [hasEverScrolledToBottom, setHasEverScrolledToBottom] = useState(false);
 
@@ -35,6 +36,48 @@ export default function Info({
     setHasScrolledToBottom(atBottom);
     if (atBottom) setHasEverScrolledToBottom(true);
   };
+
+  // Handle ESC key to close modal
+  useEffect(() => {
+    if (!isOpen) return;
+
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        onClose();
+      }
+      
+      // Fokus trap - keep focus in the modal
+      if (event.key === "Tab" && modalRef.current) {
+        const focusableElements = modalRef.current.querySelectorAll(
+          'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+        );
+        const focusableArray = Array.from(focusableElements) as HTMLElement[];
+        
+        if (focusableArray.length === 0) return;
+        
+        const firstElement = focusableArray[0];
+        const lastElement = focusableArray[focusableArray.length - 1];
+        const activeElement = document.activeElement;
+        
+        if (event.shiftKey) {
+          // Shift + Tab (back)
+          if (activeElement === firstElement) {
+            event.preventDefault();
+            lastElement.focus();
+          }
+        } else {
+          // Tab (forward)
+          if (activeElement === lastElement) {
+            event.preventDefault();
+            firstElement.focus();
+          }
+        }
+      }
+    };
+
+    document.addEventListener("keydown", handleKeyDown);
+    return () => document.removeEventListener("keydown", handleKeyDown);
+  }, [isOpen, onClose]);
 
   useEffect(() => {
     if (!isOpen) return;
@@ -59,6 +102,17 @@ export default function Info({
     if (!isOpen) {
       setHasScrolledToBottom(false);
       setHasEverScrolledToBottom(false);
+    } else {
+      // Fokusera på första focusable element när modal öppnas
+      if (modalRef.current) {
+        const focusableElements = modalRef.current.querySelectorAll(
+          'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+        );
+        const firstElement = focusableElements[0] as HTMLElement;
+        if (firstElement) {
+          setTimeout(() => firstElement.focus(), 0);
+        }
+      }
     }
   }, [isOpen]);
 
@@ -66,10 +120,10 @@ export default function Info({
 
   return (
     <>
-      <div className={styles.overlay} onClick={onClose} />
-      <div className={styles.modal}>
+      <div className={styles.overlay} onClick={onClose} role="presentation" />
+      <div ref={modalRef} className={styles.modal} role="dialog" aria-modal="true" aria-labelledby="modal-title">
         <div className={styles.header}>
-          <h3>Game Info</h3>
+          <h3 id="modal-title">Game Info</h3>
           <button
             className={styles.closeBtn}
             onClick={onClose}
