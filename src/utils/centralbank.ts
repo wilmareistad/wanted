@@ -10,10 +10,9 @@ const headers = {
 };
 
 export async function getIdentity(token: string): Promise<CentralbankUser> {
-  const res = await fetch(`${BASE_URL}/identity-tokens/${token}`, {
-    headers,
-  });
-  if (!res.ok) throw new Error("Invalid or expired token");
+  const res = await fetch(`${BASE_URL}/identity-tokens/${token}`, { headers });
+  if (res.status === 401) throw { type: "TOKEN_EXPIRED" };
+  if (!res.ok) throw { type: "NETWORK_ERROR", message: "Could not verify identity" };
   const data = await res.json();
   return data.user;
 }
@@ -22,24 +21,21 @@ export async function createTransaction(identityToken: string): Promise<Transact
   const res = await fetch(`${BASE_URL}/transactions`, {
     method: "POST",
     headers,
-    body: JSON.stringify({
-      identity_token: identityToken,
-      amount: 2,
-      api_key: API_KEY,
-    }),
+    body: JSON.stringify({ identity_token: identityToken, amount: 2, api_key: API_KEY }),
   });
-  if (!res.ok) throw new Error("Transaction failed");
+  if (res.status === 401) throw { type: "TOKEN_EXPIRED" };
+  if (!res.ok) throw { type: "TRANSACTION_FAILED" };
   return res.json();
 }
 
 export async function sendPayout(transactionId: string, levelsCleared: number): Promise<void> {
   const amount = calculatePayout(levelsCleared);
   if (amount === 0) return;
-
   const res = await fetch(`${BASE_URL}/transactions/${transactionId}/payout`, {
     method: "POST",
     headers,
     body: JSON.stringify({ amount, api_key: API_KEY }),
   });
-  if (!res.ok) throw new Error("Payout failed");
+  if (res.status === 401) throw { type: "TOKEN_EXPIRED" };
+  if (!res.ok) throw { type: "PAYOUT_FAILED" };
 }
