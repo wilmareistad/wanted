@@ -103,7 +103,7 @@ export default function Info({
       setHasScrolledToBottom(false);
       setHasEverScrolledToBottom(false);
     } else {
-      // Fokusera på första focusable element när modal öppnas
+      // Focus on teh first focusable element
       if (modalRef.current) {
         const focusableElements = modalRef.current.querySelectorAll(
           'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
