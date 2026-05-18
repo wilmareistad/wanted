@@ -1,11 +1,18 @@
 import { useState, useRef } from "react";
 import type { TimerHandle } from "../Timer";
 import { LEVELS } from "../../data/Levels";
-import { generateLevel, validateClick, resolveFigure, type GridCharacter } from "../../utils/gameUtils";
+import {
+  generateLevel,
+  validateClick,
+  resolveFigure,
+  type GridCharacter,
+} from "../../utils/gameUtils";
 import { useCentralbank } from "../../hooks/useCentralbank";
 
 export function useGameLogic() {
-  const [gameState, setGameState] = useState<"idle" | "playing" | "gameover">("idle");
+  const [gameState, setGameState] = useState<"idle" | "playing" | "gameover">(
+    "idle",
+  );
   const [levelIndex, setLevelIndex] = useState(0);
   const [targetFigure, setTargetFigure] = useState("");
   const [characters, setCharacters] = useState<GridCharacter[]>([]);
@@ -15,7 +22,12 @@ export function useGameLogic() {
   const [timerKey, setTimerKey] = useState(0);
   const [loading, setLoading] = useState(false);
   const timerRef = useRef<TimerHandle>(null);
-  const { startGame: startCentralbankGame, endGame, transaction } = useCentralbank();
+  const {
+    startGame: startCentralbankGame,
+    endGame,
+    transaction,
+    error,
+  } = useCentralbank();
 
   const currentLevel = LEVELS[levelIndex];
 
@@ -24,7 +36,9 @@ export function useGameLogic() {
     const data = await generateLevel(LEVELS[index].gridCount);
     setSessionId(data.sessionId);
     setTargetFigure(resolveFigure(data.targetFigure));
-    setCharacters(data.grid.map((c) => ({ ...c, figure: resolveFigure(c.figure) })));
+    setCharacters(
+      data.grid.map((c) => ({ ...c, figure: resolveFigure(c.figure) })),
+    );
     setLoading(false);
   }
 
@@ -74,5 +88,6 @@ export function useGameLogic() {
     startGame,
     handleClick,
     transaction,
+    error,
   };
 }
