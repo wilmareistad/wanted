@@ -14,7 +14,13 @@ export async function getTopFive(): Promise<LeaderboardEntry[]> {
     `${SUPABASE_URL}/rest/v1/leaderboard?select=id,name,score&order=score.desc&limit=5`,
     { headers }
   );
-  return res.json();
+  const data = await res.json();
+  // Ensure we only return the fields we expect
+  return Array.isArray(data) ? data.map((entry: any) => ({
+    id: entry.id,
+    name: entry.name,
+    score: entry.score,
+  })) : [];
 }
 
 export async function saveScore(name: string, score: number): Promise<void> {
