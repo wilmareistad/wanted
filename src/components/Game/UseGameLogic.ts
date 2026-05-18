@@ -21,6 +21,7 @@ export function useGameLogic() {
 
   async function loadLevel(index: number) {
     setLoading(true);
+    setMessage("");
     const data = await generateLevel(LEVELS[index].gridCount);
     setSessionId(data.sessionId);
     setTargetFigure(resolveFigure(data.targetFigure));
