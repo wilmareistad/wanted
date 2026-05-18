@@ -1,15 +1,17 @@
+import styles from "./error.module.css";
+
 interface PayoutFailedProps {
   transactionId?: string;
 }
 
 export default function PayoutFailed({ transactionId }: PayoutFailedProps) {
   return (
-    <div>
+    <div className={styles.errorWrapper }>
       <h1>Payout failed</h1>
-      <p>Something went wrong when processing your reward.</p>
-      <p>Please contact a staff member for help.</p>
+      <h2>Something went wrong when processing your reward.</h2>
+      <h2>Please contact a staff member for help.</h2>
       {transactionId && (
-        <p>Transaction ID: <strong>{transactionId}</strong></p>
+        <h2>Transaction ID: <strong>{transactionId}</strong></h2>
       )}
     </div>
   );

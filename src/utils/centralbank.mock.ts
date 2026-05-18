@@ -2,6 +2,7 @@ import type { CentralbankUser, Transaction } from "../types/CentralBank";
 import { calculatePayout } from "./gameUtils";
 
 export async function getIdentity(_token: string): Promise<CentralbankUser> {
+  throw { type: "TOKEN_EXPIRED" };
   return { id: "mock-user-123", name: "Wilma" };
 }
 
