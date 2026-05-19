@@ -1,15 +1,7 @@
 import { useState, useEffect } from "react";
-// change from centralbank.mock to centralbank when centralbank is done
-import {
-  getIdentity,
-  createTransaction,
-  sendPayout,
-} from "../utils/centralbank.mock";
-import type {
-  CentralbankUser,
-  Transaction,
-  CentralbankError,
-} from "../types/CentralBank";
+import { getIdentity, createTransaction, sendPayout } from "../utils/centralbank";
+import type { CentralbankUser, Transaction, CentralbankError } from "../types/CentralBank";
+
 
 export function useCentralbank() {
   const [user, setUser] = useState<CentralbankUser | null>(null);
@@ -24,16 +16,22 @@ export function useCentralbank() {
 
     if (token) {
       setIdentityToken(token);
+      // getIdentity is optional - try to fetch it but don't block if it fails
       getIdentity(token)
         .then(setUser)
-        .catch((e) => setError(e as CentralbankError));
+        .catch(() => {
+          // Silently ignore getIdentity failures - it's optional
+          console.debug("getIdentity failed (optional endpoint)");
+        });
     }
   }, []);
 
   async function startGame() {
     try {
-      const token = identityToken || "mock-token";
-      const txn = await createTransaction(token);
+      if (!identityToken) {
+        throw { type: "NETWORK_ERROR", message: "No identity token provided" };
+      }
+      const txn = await createTransaction(identityToken);
       setTransaction(txn);
       return txn.stamp;
     } catch (e) {

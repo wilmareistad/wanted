@@ -14,13 +14,23 @@ export async function getTopFive(): Promise<LeaderboardEntry[]> {
     `${SUPABASE_URL}/rest/v1/leaderboard?select=id,name,score&order=score.desc&limit=5`,
     { headers }
   );
-  return res.json();
+  const data = await res.json();
+  // Ensure we only return the fields we expect
+  return Array.isArray(data) ? data.map((entry: any) => ({
+    id: entry.id,
+    name: entry.name,
+    score: entry.score,
+  })) : [];
 }
 
 export async function saveScore(name: string, score: number): Promise<void> {
-  await fetch(`${SUPABASE_URL}/rest/v1/leaderboard`, {
+  const res = await fetch(`${SUPABASE_URL}/rest/v1/leaderboard`, {
     method: "POST",
     headers,
     body: JSON.stringify({ name, score }),
   });
+  // Just check if successful, don't return the response data
+  if (!res.ok) {
+    throw new Error(`Failed to save score: ${res.statusText}`);
+  }
 }

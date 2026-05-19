@@ -7,6 +7,7 @@ import {
   resolveFigure,
   type GridCharacter,
 } from "../../utils/gameUtils";
+import { saveScore } from "../../utils/leaderboard";
 import { useCentralbank } from "../../hooks/useCentralbank";
 
 export function useGameLogic() {
@@ -27,12 +28,14 @@ export function useGameLogic() {
     endGame,
     transaction,
     error,
+    user,
   } = useCentralbank();
 
   const currentLevel = LEVELS[levelIndex];
 
   async function loadLevel(index: number) {
     setLoading(true);
+    setMessage("");
     const data = await generateLevel(LEVELS[index].gridCount);
     setSessionId(data.sessionId);
     setTargetFigure(resolveFigure(data.targetFigure));
@@ -76,13 +79,22 @@ export function useGameLogic() {
       const nextIndex = levelIndex + 1;
       if (nextIndex >= LEVELS.length) {
         await endGame(currentLevel.level);
+        // Save score to leaderboard if user has a name
+        if (user?.name) {
+          try {
+            await saveScore(user.name, score);
+          } catch (err) {
+            console.error("Failed to save score:", err);
+          }
+        }
         setGameState("gameover");
       } else {
         setLevelIndex(nextIndex);
         await loadLevel(nextIndex);
       }
     } else {
-      setMessage("Wrong...");
+      setMessage("Wrong!");
+      setTimeout(() => setMessage(""), 3000);
     }
   }
 

@@ -1,6 +1,5 @@
 import { calculatePayout } from "./gameUtils";
-import type { CentralbankUser } from "../types/CentralBank"
-import type { Transaction } from "../types/CentralBank"
+import type { CentralbankUser, Transaction } from "../types/CentralBank";
 
 const BASE_URL = import.meta.env.VITE_CENTRALBANK_URL;
 const API_KEY = import.meta.env.VITE_CENTRALBANK_API_KEY;
@@ -24,7 +23,11 @@ export async function createTransaction(identityToken: string): Promise<Transact
     body: JSON.stringify({ identity_token: identityToken, amount: 2, api_key: API_KEY }),
   });
   if (res.status === 401) throw { type: "TOKEN_EXPIRED" };
-  if (!res.ok) throw { type: "TRANSACTION_FAILED" };
+  if (!res.ok) {
+    const errorData = await res.json().catch(() => ({}));
+    console.error("Transaction failed:", res.status, errorData);
+    throw { type: "TRANSACTION_FAILED" };
+  }
   return res.json();
 }
 

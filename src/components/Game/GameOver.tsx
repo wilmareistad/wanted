@@ -1,5 +1,4 @@
 import { useState } from "react";
-import type { ReactNode } from "react";
 import type { GameOverProps } from "../../types/Game";
 import styles from "./GameOver.module.css";
 import { Leaderboard } from "../Leaderboard";
@@ -12,7 +11,7 @@ export function GameOver({
   currentLevel,
   onPlayAgain,
   transaction,
-}: GameOverProps): ReactNode {
+}: GameOverProps) {
   const [infoMode, setInfoMode] = useState<null | "play" | "info">(null);
 
   const openInfoForPlay = () => setInfoMode("play");
@@ -42,7 +41,13 @@ export function GameOver({
           </div>
 
           <div className={styles.rewardBox}>
-            <div>€{euro} | Stamp: {transaction?.stamp}</div>
+            <p>€{euro}</p>
+            <p>
+              Stamp: {transaction?.stamp?.animal} {transaction?.stamp?.metal}
+            </p>
+            {transaction?.stamp?.image_url && (
+              <img src={transaction.stamp.image_url} alt="Your stamp" />
+            )}
           </div>
         </div>
 
