@@ -8,7 +8,6 @@ import PayoutFailed from "../../errors/PayoutFailed";
 export default function Game() {
   const {
     gameState,
-    setGameState,
     currentLevel,
     targetFigure,
     characters,
@@ -19,6 +18,7 @@ export default function Game() {
     timerRef,
     startGame,
     handleClick,
+    handleTimeUp,
     transaction,
     error,
   } = useGameLogic();
@@ -45,7 +45,7 @@ if (error) return <p>Something went wrong: {error.type}</p>;
         timerKey={timerKey}
         timerRef={timerRef}
         onCharacterClick={handleClick}
-        onTimeUp={() => setGameState("gameover")}
+        onTimeUp={handleTimeUp}
       />
     );
   }

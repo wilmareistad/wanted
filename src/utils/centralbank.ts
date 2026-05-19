@@ -33,12 +33,18 @@ export async function createTransaction(identityToken: string): Promise<Transact
 
 export async function sendPayout(transactionId: string, levelsCleared: number): Promise<void> {
   const amount = calculatePayout(levelsCleared);
-  if (amount === 0) return;
+  if (amount === 0) {
+    return;
+  }
   const res = await fetch(`${BASE_URL}/transactions/${transactionId}/payout`, {
     method: "POST",
     headers,
     body: JSON.stringify({ amount, api_key: API_KEY }),
   });
   if (res.status === 401) throw { type: "TOKEN_EXPIRED" };
-  if (!res.ok) throw { type: "PAYOUT_FAILED" };
+  if (!res.ok) {
+    const errorData = await res.json().catch(() => ({}));
+    console.error("Payout failed:", res.status, errorData);
+    throw { type: "PAYOUT_FAILED" };
+  }
 }
