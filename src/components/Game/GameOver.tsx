@@ -22,6 +22,12 @@ export function GameOver({
   };
   const euro = calculatePayout(currentLevel.level);
 
+  // Convert HTTP to HTTPS for stamp image URL to avoid mixed content warnings
+  const stampImageUrl = transaction?.stamp?.image_url?.replace(
+    /^http:\/\//,
+    "https://"
+  );
+
   return (
     <div className={styles.overContainer}>
       <h1>GAME OVER</h1>
@@ -46,7 +52,7 @@ export function GameOver({
               Stamp: {transaction?.stamp?.animal} {transaction?.stamp?.metal}
             </p>
             {transaction?.stamp?.image_url && (
-              <img src={transaction.stamp.image_url} alt="Your stamp" />
+              <img src={stampImageUrl} alt="Your stamp" />
             )}
           </div>
         </div>

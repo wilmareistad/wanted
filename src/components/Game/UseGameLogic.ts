@@ -22,6 +22,7 @@ export function useGameLogic() {
   const [score, setScore] = useState(0);
   const [timerKey, setTimerKey] = useState(0);
   const [loading, setLoading] = useState(false);
+  const [gameEnded, setGameEnded] = useState(false);
   const timerRef = useRef<TimerHandle>(null);
   const {
     startGame: startCentralbankGame,
@@ -50,13 +51,14 @@ export function useGameLogic() {
     setLevelIndex(0);
     setMessage("");
     setTimerKey((k) => k + 1);
+    setGameEnded(false);
     setGameState("playing");
     await startCentralbankGame();
     await loadLevel(0);
   }
 
   async function handleClick(character: GridCharacter) {
-    if (gameState !== "playing" || !sessionId || loading) return;
+    if (gameState !== "playing" || !sessionId || loading || gameEnded) return;
 
     const correct = await validateClick(sessionId, character.id);
 
@@ -67,6 +69,7 @@ export function useGameLogic() {
       const nextIndex = levelIndex + 1;
       if (nextIndex >= LEVELS.length) {
         // Game completed - save score and end game
+        setGameEnded(true);
         setScore(newScore);
         await endGame(currentLevel.level);
         if (user?.name) {
@@ -89,8 +92,11 @@ export function useGameLogic() {
   }
 
   async function handleTimeUp() {
-    // Time's up - end game with current level and save score 
-    endGame(currentLevel.level);
+    // Time's up - end game with current level and save score
+    if (gameEnded) return;
+    setGameEnded(true);
+    
+    await endGame(currentLevel.level);
     if (user?.name && score > 0) {
       try {
         await saveScore(user.name, score);
