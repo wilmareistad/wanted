@@ -89,7 +89,7 @@ export function useGameLogic() {
   }
 
   async function handleTimeUp() {
-    // Time's up - end game with current level and save score
+    // Time's up - end game with current level and save score 
     endGame(currentLevel.level);
     if (user?.name && score > 0) {
       try {
