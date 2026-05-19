@@ -33,7 +33,9 @@ export async function createTransaction(identityToken: string): Promise<Transact
 
 export async function sendPayout(transactionId: string, levelsCleared: number): Promise<void> {
   const amount = calculatePayout(levelsCleared);
-  if (amount === 0) return;
+  if (amount === 0) {
+    return;
+  }
   const res = await fetch(`${BASE_URL}/transactions/${transactionId}/payout`, {
     method: "POST",
     headers,

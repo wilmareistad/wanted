@@ -10,7 +10,6 @@ import styles from "../../errors/error.module.css";
 export default function Game() {
   const {
     gameState,
-    setGameState,
     currentLevel,
     targetFigure,
     characters,
@@ -21,12 +20,12 @@ export default function Game() {
     timerRef,
     startGame,
     handleClick,
+    handleTimeUp,
     transaction,
     error,
     resetToIdle,
   } = useGameLogic();
 
-  // Own page for major errors
   if (error?.type === "TOKEN_EXPIRED") return <TokenExpired />;
   if (error?.type === "PAYOUT_FAILED")
     return <PayoutFailed transactionId={transaction?.id} />;
@@ -35,7 +34,6 @@ export default function Game() {
 
   return (
     <>
-      {/* SMall toast for simple errors*/}
       {error && (
         <div className={styles.toast}>
           <h3>Something went wrong</h3>
@@ -55,7 +53,7 @@ export default function Game() {
           timerKey={timerKey}
           timerRef={timerRef}
           onCharacterClick={handleClick}
-          onTimeUp={() => setGameState("gameover")}
+          onTimeUp={handleTimeUp}
         />
       )}
       {gameState === "gameover" && (

@@ -22,6 +22,7 @@ export function useGameLogic() {
   const [score, setScore] = useState(0);
   const [timerKey, setTimerKey] = useState(0);
   const [loading, setLoading] = useState(false);
+  const gameEndedRef = useRef(false);
   const timerRef = useRef<TimerHandle>(null);
   const {
     startGame: startCentralbankGame,
@@ -55,24 +56,25 @@ export function useGameLogic() {
     setLoading(false);
   }
 
-  async function startGame() {
-    setScore(0);
-    setLevelIndex(0);
-    setMessage("");
-    setTimerKey((k) => k + 1);
+async function startGame() {
+  setScore(0);
+  setLevelIndex(0);
+  setMessage("");
+  setTimerKey((k) => k + 1);
+  gameEndedRef.current = false;
 
-    try {
-      await startCentralbankGame();
-    } catch {
-      return;
-    }
-
-    setGameState("playing");
-    await loadLevel(0);
+  try {
+    await startCentralbankGame();
+  } catch {
+    return;
   }
 
+  setGameState("playing");
+  await loadLevel(0);
+}
+
   async function handleClick(character: GridCharacter) {
-    if (gameState !== "playing" || !sessionId || loading) return;
+    if (gameState !== "playing" || !sessionId || loading || gameEndedRef.current) return;
 
     let correct: boolean;
     try {
@@ -83,22 +85,25 @@ export function useGameLogic() {
     }
 
     if (correct) {
-      setScore((prev) => prev + 1);
+      const newScore = score + 1;
       timerRef.current?.addTime(2);
 
       const nextIndex = levelIndex + 1;
       if (nextIndex >= LEVELS.length) {
+        // Game completed - save score and end game
+        gameEndedRef.current = true;
+        setScore(newScore);
         await endGame(currentLevel.level);
-        // Save score to leaderboard if user has a name
         if (user?.name) {
           try {
-            await saveScore(user.name, score);
+            await saveScore(user.name, newScore);
           } catch (err) {
             console.error("Failed to save score:", err);
           }
         }
         setGameState("gameover");
       } else {
+        setScore(newScore);
         setLevelIndex(nextIndex);
         await loadLevel(nextIndex);
       }
@@ -106,6 +111,24 @@ export function useGameLogic() {
       setMessage("Wrong!");
       setTimeout(() => setMessage(""), 3000);
     }
+  }
+
+  async function handleTimeUp() {
+    // Time's up - end game with current level and save score
+    if (gameEndedRef.current) {
+      return;
+    }
+    gameEndedRef.current = true;
+    
+    await endGame(currentLevel.level);
+    if (user?.name && score > 0) {
+      try {
+        await saveScore(user.name, score);
+      } catch (err) {
+        console.error("Failed to save score:", err);
+      }
+    }
+    setGameState("gameover");
   }
 
   return {
@@ -121,6 +144,7 @@ export function useGameLogic() {
     timerRef,
     startGame,
     handleClick,
+    handleTimeUp,
     transaction,
     error,
     resetToIdle,

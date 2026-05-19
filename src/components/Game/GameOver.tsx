@@ -22,6 +22,12 @@ export function GameOver({
   };
   const euro = calculatePayout(currentLevel.level);
 
+  // Convert HTTP to HTTPS for stamp image URL to avoid mixed content warnings
+  const stampImageUrl = transaction?.stamp?.image_url?.replace(
+    /^http:\/\//,
+    "https://"
+  );
+
   return (
     <div className={styles.overContainer}>
       <h1>GAME OVER</h1>
@@ -46,7 +52,7 @@ export function GameOver({
               Stamp: {transaction?.stamp?.animal} {transaction?.stamp?.metal}
             </p>
             {transaction?.stamp?.image_url && (
-              <img src={transaction.stamp.image_url} alt="Your stamp" />
+              <img src={stampImageUrl} alt="Your stamp" />
             )}
           </div>
         </div>
@@ -54,7 +60,15 @@ export function GameOver({
         <Leaderboard />
       </section>
 
-      <Navigation onStartGame={openInfoForPlay} onInfoClick={openInfo} />
+
+      {/* out commented Nav and wrote it without play again button, will be changed if tvoli choose to have the functionality yo play again, right now you have to go back to tivoli for play again */}
+      {/* <Navigation onStartGame={openInfoForPlay} onInfoClick={openInfo} /> */}
+      <Navigation 
+        onStartGame={openInfoForPlay} 
+        onInfoClick={openInfo}
+        showPlayButton={false}
+        tivoliUrl={import.meta.env.VITE_TIVOLI_URL}
+      />
 
       <Info
         isOpen={infoMode !== null}
