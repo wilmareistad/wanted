@@ -4,6 +4,7 @@ import { LEVELS } from "../../data/Levels";
 import {
   generateLevel,
   validateClick,
+  resolveFigure,
   type GridCharacter,
 } from "../../utils/gameUtils";
 import { saveScore } from "../../utils/leaderboard";
@@ -48,8 +49,13 @@ export function useGameLogic() {
     setMessage("");
     const data = await generateLevel(LEVELS[index].gridCount);
     setSessionId(data.sessionId);
-    setTargetFigure(data.targetFigure);
-    setCharacters(data.grid);
+    setTargetFigure(resolveFigure(data.targetFigure));
+    setCharacters(
+      data.grid.map((character) => ({
+        ...character,
+        figure: resolveFigure(character.figure),
+      })),
+    );
     setLoading(false);
   }
 
