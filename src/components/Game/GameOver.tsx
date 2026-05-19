@@ -43,7 +43,7 @@ export function GameOver({
           <div className={styles.rewardBox}>
             <p>€{euro}</p>
             <p>
-              Stamp: {transaction?.stamp?.animal} – {transaction?.stamp?.metal}
+              Stamp: {transaction?.stamp?.animal} {transaction?.stamp?.metal}
             </p>
             {transaction?.stamp?.image_url && (
               <img src={transaction.stamp.image_url} alt="Your stamp" />
