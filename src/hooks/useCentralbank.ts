@@ -43,9 +43,13 @@ export function useCentralbank() {
   async function endGame(levelsCleared: number) {
     try {
       if (transaction?.id) {
+        console.log(`endGame called with transaction.id=${transaction.id}, levelsCleared=${levelsCleared}`);
         await sendPayout(transaction.id, levelsCleared);
+      } else {
+        console.warn("endGame called but no transaction.id");
       }
     } catch (e) {
+      console.error("endGame error:", e);
       setError(e as CentralbankError);
     }
   }
