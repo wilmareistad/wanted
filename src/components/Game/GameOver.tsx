@@ -52,7 +52,7 @@ export function GameOver({
               Stamp: {transaction?.stamp?.animal} {transaction?.stamp?.metal}
             </p>
             {transaction?.stamp?.image_url && (
-              <img src={stampImageUrl} alt="Your stamp" />
+              <img className={styles.stamp} src={stampImageUrl} alt="Your stamp" />
             )}
           </div>
         </div>
