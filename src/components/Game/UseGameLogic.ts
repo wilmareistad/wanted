@@ -22,7 +22,7 @@ export function useGameLogic() {
   const [score, setScore] = useState(0);
   const [timerKey, setTimerKey] = useState(0);
   const [loading, setLoading] = useState(false);
-  const [gameEnded, setGameEnded] = useState(false);
+  const gameEndedRef = useRef(false);
   const timerRef = useRef<TimerHandle>(null);
   const {
     startGame: startCentralbankGame,
@@ -51,14 +51,14 @@ export function useGameLogic() {
     setLevelIndex(0);
     setMessage("");
     setTimerKey((k) => k + 1);
-    setGameEnded(false);
+    gameEndedRef.current = false;
     setGameState("playing");
     await startCentralbankGame();
     await loadLevel(0);
   }
 
   async function handleClick(character: GridCharacter) {
-    if (gameState !== "playing" || !sessionId || loading || gameEnded) return;
+    if (gameState !== "playing" || !sessionId || loading || gameEndedRef.current) return;
 
     const correct = await validateClick(sessionId, character.id);
 
@@ -70,7 +70,7 @@ export function useGameLogic() {
       if (nextIndex >= LEVELS.length) {
         // Game completed - save score and end game
         console.log("handleClick: Game completed, calling endGame");
-        setGameEnded(true);
+        gameEndedRef.current = true;
         setScore(newScore);
         await endGame(currentLevel.level);
         if (user?.name) {
@@ -94,13 +94,13 @@ export function useGameLogic() {
 
   async function handleTimeUp() {
     // Time's up - end game with current level and save score
-    console.log(`handleTimeUp called: gameEnded=${gameEnded}`);
-    if (gameEnded) {
+    console.log(`handleTimeUp called: gameEnded=${gameEndedRef.current}`);
+    if (gameEndedRef.current) {
       console.log("handleTimeUp: gameEnded is true, returning early");
       return;
     }
     console.log("handleTimeUp: Setting gameEnded=true and calling endGame");
-    setGameEnded(true);
+    gameEndedRef.current = true;
     
     await endGame(currentLevel.level);
     if (user?.name && score > 0) {
