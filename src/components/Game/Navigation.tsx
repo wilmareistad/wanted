@@ -4,19 +4,33 @@ import styles from "./Idle.module.css";
 
 interface NavigationProps extends IdleProps {
   onInfoClick?: () => void;
+  showPlayButton?: boolean;
+  tivoliUrl?: string;
 }
 
 export function Navigation({
   onStartGame,
   onInfoClick,
+  showPlayButton = true,
+  tivoliUrl,
 }: NavigationProps): ReactNode {
+  const handleTivoliClick = () => {
+    if (tivoliUrl) {
+      window.location.href = tivoliUrl;
+    }
+  };
+
   return (
     <section className={styles.infoButtons}>
-      <button className={styles.playBtn} onClick={onStartGame}>
-        PLAY
-      </button>
+      {showPlayButton && (
+        <button className={styles.playBtn} onClick={onStartGame}>
+          PLAY
+        </button>
+      )}
       <div>
-        <button className={styles.tivoliBtn}>TO TIVOLI</button>
+        <button className={styles.tivoliBtn} onClick={handleTivoliClick}>
+          TO TIVOLI
+        </button>
         <button className={styles.rewardBtn} onClick={onInfoClick}>
           Game Info
         </button>
