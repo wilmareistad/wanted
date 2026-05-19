@@ -28,8 +28,18 @@ export function useGameLogic() {
     endGame,
     transaction,
     error,
+    clearError,
     user,
   } = useCentralbank();
+
+  function resetToIdle() {
+    clearError();
+    setGameState("idle");
+    setCharacters([]);
+    setTargetFigure("");
+    setScore(0);
+    setLevelIndex(0);
+  }
 
   const currentLevel = LEVELS[levelIndex];
 
@@ -113,5 +123,7 @@ export function useGameLogic() {
     handleClick,
     transaction,
     error,
+    resetToIdle,
+    user,
   };
 }

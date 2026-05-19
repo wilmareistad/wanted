@@ -1,6 +1,15 @@
 import { useState, useEffect } from "react";
-import { getIdentity, createTransaction, sendPayout } from "../utils/centralbank";
-import type { CentralbankUser, Transaction, CentralbankError, ApiError } from "../types/CentralBank";
+import {
+  getIdentity,
+  createTransaction,
+  sendPayout,
+} from "../utils/centralbank";
+import type {
+  CentralbankUser,
+  Transaction,
+  CentralbankError,
+  ApiError,
+} from "../types/CentralBank";
 
 export function useCentralbank() {
   const [user, setUser] = useState<CentralbankUser | null>(null);
@@ -60,5 +69,9 @@ export function useCentralbank() {
     }
   }
 
-  return { user, startGame, endGame, transaction, error };
+  function clearError() {
+    setError(null);
+  }
+
+  return { user, startGame, endGame, transaction, error, clearError };
 }
