@@ -4,7 +4,6 @@ import { LEVELS } from "../../data/Levels";
 import {
   generateLevel,
   validateClick,
-  resolveFigure,
   type GridCharacter,
 } from "../../utils/gameUtils";
 import { saveScore } from "../../utils/leaderboard";
@@ -49,32 +48,36 @@ export function useGameLogic() {
     setMessage("");
     const data = await generateLevel(LEVELS[index].gridCount);
     setSessionId(data.sessionId);
-    setTargetFigure(resolveFigure(data.targetFigure));
-    setCharacters(
-      data.grid.map((c) => ({ ...c, figure: resolveFigure(c.figure) })),
-    );
+    setTargetFigure(data.targetFigure);
+    setCharacters(data.grid);
     setLoading(false);
   }
 
-async function startGame() {
-  setScore(0);
-  setLevelIndex(0);
-  setMessage("");
-  setTimerKey((k) => k + 1);
-  gameEndedRef.current = false;
+  async function startGame() {
+    setScore(0);
+    setLevelIndex(0);
+    setMessage("");
+    setTimerKey((k) => k + 1);
+    gameEndedRef.current = false;
 
-  try {
-    await startCentralbankGame();
-  } catch {
-    return;
+    try {
+      await startCentralbankGame();
+    } catch {
+      return;
+    }
+
+    setGameState("playing");
+    await loadLevel(0);
   }
 
-  setGameState("playing");
-  await loadLevel(0);
-}
-
   async function handleClick(character: GridCharacter) {
-    if (gameState !== "playing" || !sessionId || loading || gameEndedRef.current) return;
+    if (
+      gameState !== "playing" ||
+      !sessionId ||
+      loading ||
+      gameEndedRef.current
+    )
+      return;
 
     let correct: boolean;
     try {
@@ -119,7 +122,7 @@ async function startGame() {
       return;
     }
     gameEndedRef.current = true;
-    
+
     await endGame(currentLevel.level);
     if (user?.name && score > 0) {
       try {
