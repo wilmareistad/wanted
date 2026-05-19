@@ -4,6 +4,7 @@ import { GameOn } from "./GameOn";
 import { GameOver } from "./GameOver";
 import TokenExpired from "../../errors/TokenExpired";
 import PayoutFailed from "../../errors/PayoutFailed";
+import TransactionFailed from "../../errors/TransactionFailed";
 
 export default function Game() {
   const {
@@ -23,11 +24,12 @@ export default function Game() {
     error,
   } = useGameLogic();
 
-  //Error handling
-if (error?.type === "TOKEN_EXPIRED") return <TokenExpired />;
-if (error?.type === "PAYOUT_FAILED") return <PayoutFailed transactionId={transaction?.id} />;
-if (error?.type === "NETWORK_ERROR") return <p>Network error: {error.message}</p>;
-if (error) return <p>Something went wrong: {error.type}</p>;
+  if (error?.type === "TOKEN_EXPIRED") return <TokenExpired />;
+  if (error?.type === "PAYOUT_FAILED")
+    return <PayoutFailed transactionId={transaction?.id} />;
+  if (error?.type === "TRANSACTION_FAILED")
+    return <TransactionFailed onRetry={() => window.location.reload()} />;
+  if (error) return <p>Something went wrong: {error.type}</p>;
 
   if (gameState === "idle") {
     return <Idle onStartGame={startGame} />;
@@ -50,5 +52,12 @@ if (error) return <p>Something went wrong: {error.type}</p>;
     );
   }
 
-  return <GameOver score={score} currentLevel={currentLevel} onPlayAgain={startGame} transaction={transaction} />;
+  return (
+    <GameOver
+      score={score}
+      currentLevel={currentLevel}
+      onPlayAgain={startGame}
+      transaction={transaction}
+    />
+  );
 }

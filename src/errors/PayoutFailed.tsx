@@ -9,7 +9,7 @@ export default function PayoutFailed({ transactionId }: PayoutFailedProps) {
     <div className={styles.errorWrapper }>
       <h1>Payout failed</h1>
       <h2>Something went wrong when processing your reward.</h2>
-      <h2>Please contact a staff member for help.</h2>
+      <h2>Please contact centralbank for help.</h2>
       {transactionId && (
         <h2>Transaction ID: <strong>{transactionId}</strong></h2>
       )}
