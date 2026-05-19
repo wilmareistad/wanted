@@ -7,7 +7,14 @@ export function Leaderboard() {
   const [entries, setEntries] = useState<LeaderboardEntry[]>([]);
 
   useEffect(() => {
-    getTopFive().then(setEntries);
+    const handleResize = () => {
+      const limit = window.innerWidth >= 768 ? 10 : 5;
+      getTopFive(limit).then(setEntries);
+    };
+
+    handleResize(); // Initial fetch
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
   }, []);
 
   return (
