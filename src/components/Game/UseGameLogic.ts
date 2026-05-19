@@ -29,8 +29,18 @@ export function useGameLogic() {
     endGame,
     transaction,
     error,
+    clearError,
     user,
   } = useCentralbank();
+
+  function resetToIdle() {
+    clearError();
+    setGameState("idle");
+    setCharacters([]);
+    setTargetFigure("");
+    setScore(0);
+    setLevelIndex(0);
+  }
 
   const currentLevel = LEVELS[levelIndex];
 
@@ -46,21 +56,33 @@ export function useGameLogic() {
     setLoading(false);
   }
 
-  async function startGame() {
-    setScore(0);
-    setLevelIndex(0);
-    setMessage("");
-    setTimerKey((k) => k + 1);
-    gameEndedRef.current = false;
-    setGameState("playing");
+async function startGame() {
+  setScore(0);
+  setLevelIndex(0);
+  setMessage("");
+  setTimerKey((k) => k + 1);
+  gameEndedRef.current = false;
+
+  try {
     await startCentralbankGame();
-    await loadLevel(0);
+  } catch {
+    return;
   }
+
+  setGameState("playing");
+  await loadLevel(0);
+}
 
   async function handleClick(character: GridCharacter) {
     if (gameState !== "playing" || !sessionId || loading || gameEndedRef.current) return;
 
-    const correct = await validateClick(sessionId, character.id);
+    let correct: boolean;
+    try {
+      correct = await validateClick(sessionId, character.id);
+    } catch {
+      setMessage("Connection error, try clicking again.");
+      return;
+    }
 
     if (correct) {
       const newScore = score + 1;
@@ -125,5 +147,7 @@ export function useGameLogic() {
     handleTimeUp,
     transaction,
     error,
+    resetToIdle,
+    user,
   };
 }
