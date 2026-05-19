@@ -56,15 +56,15 @@ export async function validateClick(
 }
 
 const FIGURE_IMAGES: Record<string, string> = {
-  HappyRune,
-  DeadRune,
-  LoveRune,
-  MadRune,
-  SadRune,
+  happyrune: HappyRune,
+  deadrune: DeadRune,
+  loverune: LoveRune,
+  madrune: MadRune,
+  sadrune: SadRune,
 };
 
 export function resolveFigure(figure: string): string {
-  return FIGURE_IMAGES[figure] ?? figure;
+  return FIGURE_IMAGES[figure.trim().toLowerCase()] ?? figure;
 }
 
 export function isImage(figure: string): boolean {
