@@ -38,7 +38,7 @@ export default function Game() {
       {/* SMall toast for simple errors*/}
       {error && (
         <div className={styles.toast}>
-          <p>Something went wrong</p>
+          <h3>Something went wrong</h3>
           <button onClick={resetToIdle}>Try again</button>
         </div>
       )}
