@@ -69,7 +69,6 @@ export function useGameLogic() {
       const nextIndex = levelIndex + 1;
       if (nextIndex >= LEVELS.length) {
         // Game completed - save score and end game
-        console.log("handleClick: Game completed, calling endGame");
         gameEndedRef.current = true;
         setScore(newScore);
         await endGame(currentLevel.level);
@@ -94,12 +93,9 @@ export function useGameLogic() {
 
   async function handleTimeUp() {
     // Time's up - end game with current level and save score
-    console.log(`handleTimeUp called: gameEnded=${gameEndedRef.current}`);
     if (gameEndedRef.current) {
-      console.log("handleTimeUp: gameEnded is true, returning early");
       return;
     }
-    console.log("handleTimeUp: Setting gameEnded=true and calling endGame");
     gameEndedRef.current = true;
     
     await endGame(currentLevel.level);

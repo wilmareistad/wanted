@@ -17,7 +17,6 @@ export async function getIdentity(token: string): Promise<CentralbankUser> {
 }
 
 export async function createTransaction(identityToken: string): Promise<Transaction> {
-  console.log(`Creating transaction with identity token: ${identityToken}`);
   const res = await fetch(`${BASE_URL}/transactions`, {
     method: "POST",
     headers,
@@ -29,16 +28,12 @@ export async function createTransaction(identityToken: string): Promise<Transact
     console.error("Transaction failed:", res.status, errorData);
     throw { type: "TRANSACTION_FAILED" };
   }
-  const txn = await res.json();
-  console.log(`Transaction created: id=${txn.id}`);
-  return txn;
+  return res.json();
 }
 
 export async function sendPayout(transactionId: string, levelsCleared: number): Promise<void> {
   const amount = calculatePayout(levelsCleared);
-  console.log(`Sending payout: transactionId=${transactionId}, levelsCleared=${levelsCleared}, amount=${amount}`);
   if (amount === 0) {
-    console.log("Amount is 0, skipping payout");
     return;
   }
   const res = await fetch(`${BASE_URL}/transactions/${transactionId}/payout`, {
