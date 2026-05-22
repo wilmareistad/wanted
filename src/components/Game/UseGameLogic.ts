@@ -124,7 +124,8 @@ export function useGameLogic() {
         setScore(newScore);
         setIsWin(true);
         try {
-          await endGame(currentLevel.level);
+          console.log("[WIN] Ending game with score:", newScore);
+          await endGame(newScore);
           if (user?.name) {
             await saveScore(user.name, newScore);
           }
@@ -150,7 +151,8 @@ export function useGameLogic() {
     gameEndedRef.current = true;
 
     try {
-      await endGame(currentLevel.level);
+      console.log("[GAMEOVER] Ending game with score:", score);
+      await endGame(score);
       if (user?.name && score > 0) {
         await saveScore(user.name, score);
       }
