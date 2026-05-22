@@ -58,12 +58,15 @@ export async function sendPayout(
   levelsCleared: number,
 ): Promise<void> {
   const amount = calculatePayout(levelsCleared);
+  console.log("[PAYOUT] levelsCleared:", levelsCleared, "amount:", amount);
   if (amount === 0) {
     // No payout for level 0-1
+    console.log("[PAYOUT] Amount is 0, skipping payout");
     return;
   }
   if (!TIVOLI_MODE)
     return mockCentralbank.sendPayout(transactionId, levelsCleared);
+  console.log("[PAYOUT] Sending payout to API:", { transactionId, amount });
   const res = await fetch(`${BASE_URL}/transactions/${transactionId}/payout`, {
     method: "POST",
     headers,
