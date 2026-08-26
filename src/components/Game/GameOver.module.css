@@ -292,7 +292,11 @@
     width: 30vw;
   }
 
-  .overContainer h1,
+  .overContainer h1 {
+    font-size: clamp(5rem, 22vw, 15rem);
+    margin-top: 0.5rem;
+  }
+
   .winContainer h1 {
     font-size: 15rem;
     margin-top: 0.5rem;
